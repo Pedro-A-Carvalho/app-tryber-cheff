@@ -28,8 +28,8 @@ function Login() {
   return (
 
     <form
-      onSubmit={ (e) => {
-        e.preventDefault();
+      onSubmit={ (event) => {
+        event.preventDefault();
         navigate('/meals');
         localStorage.setItem('user', JSON.stringify(storage));
       } }

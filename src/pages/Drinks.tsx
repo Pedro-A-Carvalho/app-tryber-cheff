@@ -1,11 +1,10 @@
+import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 function Drinks() {
   return (
-    <>
-      <h1>Tela Secundária</h1>
-      <Footer />
-    </>
+    <Header>Drinks</Header>
+    <Footer />
   );
 }
 
