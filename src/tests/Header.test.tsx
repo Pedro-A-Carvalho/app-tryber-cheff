@@ -21,7 +21,6 @@ describe('Testa o componente Header.', () => {
 
     const btnSearch = screen.getByTestId('search-top-btn');
     await user.click(btnSearch);
-
     const inputSearch = await screen.findByTestId('search-input');
     expect(inputSearch).toBeInTheDocument();
   });
