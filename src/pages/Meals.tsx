@@ -1,8 +1,12 @@
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 function Meals() {
   return (
-    <Header>Meals</Header>
+    <>
+      <Header>Meals</Header>
+      <Footer />
+    </>
   );
 }
 

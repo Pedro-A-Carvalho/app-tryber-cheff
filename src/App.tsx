@@ -6,6 +6,7 @@ import Drinks from './pages/Drinks';
 import Profile from './pages/Profile';
 import DoneRecipes from './pages/DoneRecipes';
 import FavoriteRecipes from './pages/FavoriteRecipes';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
