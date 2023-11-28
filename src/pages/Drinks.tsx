@@ -1,12 +1,12 @@
 import Footer from '../components/Footer';
 
-function Meals() {
+function Drinks() {
   return (
     <>
-      <h1>Tela Principal</h1>
+      <h1>Tela Secundária</h1>
       <Footer />
     </>
   );
 }
 
-export default Meals;
+export default Drinks;
