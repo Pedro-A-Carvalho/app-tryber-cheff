@@ -3,8 +3,10 @@ import Footer from '../components/Footer';
 
 function Meals() {
   return (
-    <Header>Meals</Header>
-    <Footer />
+    <>
+      <Header>Meals</Header>
+      <Footer />
+    </>
   );
 }
 
