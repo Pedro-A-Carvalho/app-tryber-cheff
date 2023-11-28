@@ -1,6 +1,8 @@
+import Header from '../components/Header';
+
 function Meals() {
   return (
-    <h1>Tela Principal</h1>
+    <Header>Meals</Header>
   );
 }
 
