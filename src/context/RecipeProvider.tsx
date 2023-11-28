@@ -10,6 +10,8 @@ function RecipeProvider({ children }: RecipeProviderProps) {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>([]);
+  const [filteredCategories, setFilteredCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const path = window.location.pathname;
 
   useEffect(
@@ -42,18 +44,66 @@ function RecipeProvider({ children }: RecipeProviderProps) {
         setCategories(category);
         setFilteredRecipes(simplifiedDrinks);
       };
-
+      setLoading(true);
       if (path === '/meals') fetchMeals();
       if (path === '/drinks') fetchDrinks();
+      setLoading(false);
     },
     [path],
+  );
+
+  useEffect(
+    () => {
+      const filterMeals = async () => {
+        if (filteredCategories.length === 0) {
+          setFilteredRecipes(recipes);
+          return;
+        }
+        const cat = filteredCategories[0].strCategory;
+        console.log(cat);
+        const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${cat}`);
+        const { meals } = await response.json();
+        const simplifiedMeals = meals.map((meal: MealType) => ({
+          id: meal.idMeal,
+          name: meal.strMeal,
+          image: meal.strMealThumb,
+        }));
+        console.log(meals);
+        setFilteredRecipes(simplifiedMeals);
+      };
+      const filterDrinks = async () => {
+        if (filteredCategories.length === 0) {
+          setFilteredRecipes(recipes);
+          return;
+        }
+        const cat = filteredCategories[0].strCategory;
+        console.log(cat);
+        const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${cat}`);
+        const { drinks } = await response.json();
+        const simplifiedDrinks = drinks.map((drink: DrinkType) => ({
+          id: drink.idDrink,
+          name: drink.strDrink,
+          image: drink.strDrinkThumb,
+        }));
+        console.log(drinks);
+        setFilteredRecipes(simplifiedDrinks);
+      };
+      setLoading(true);
+      if (path === '/meals') filterMeals();
+      if (path === '/drinks') filterDrinks();
+      setLoading(false);
+    },
+    [filteredCategories],
   );
 
   const context = {
     recipes,
     categories,
     filteredRecipes,
+    filteredCategories,
     setFilteredRecipes,
+    setFilteredCategories,
+    loading,
   };
 
   return (
