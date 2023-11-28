@@ -21,6 +21,7 @@ function SearchBar({ endIngredients, endName, endFirstLetter }: SearchBarTypes) 
       endpoint = endFirstLetter;
       if (search.length > 1) {
         window.alert('Your search must have only 1 (one) character');
+        return;
       }
     }
     console.log(endpoint);
