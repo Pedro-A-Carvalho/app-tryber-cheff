@@ -33,4 +33,80 @@ describe('Testa o componente Recipes.', () => {
     const buttonDrink = await screen.findByTestId('Ordinary Drink-category-filter');
     expect(buttonDrink).toBeInTheDocument();
   });
+
+  test('Verifica se todos os elementos estão na tela de meals com filtro.', async () => {
+    const { user } = renderWithProvider(<App />, { route: '/meals' });
+    const buttonBeef = await screen.findByTestId('Beef-category-filter');
+    user.click(buttonBeef);
+    const recipeCard = await screen.findByText('Beef and Mustard Pie');
+    expect(recipeCard).toBeInTheDocument();
+  });
+
+  test('Verifica se ao clicar no mesmo filtro volta ao padrao.', async () => {
+    const { user } = renderWithProvider(<App />, { route: '/meals' });
+    const buttonBeef = await screen.findByTestId('Beef-category-filter');
+    user.click(buttonBeef);
+    const recipeCard = await screen.findByText('Beef and Mustard Pie');
+    expect(recipeCard).toBeInTheDocument();
+    user.click(buttonBeef);
+    const recipeCard2 = await screen.findByText('Corba');
+    expect(recipeCard2).toBeInTheDocument();
+  });
+
+  test('Verifica se todos os elementos estão na tela de drinks com filtro.', async () => {
+    const { user } = renderWithProvider(<App />, { route: '/drinks' });
+    const buttonDrink = await screen.findByTestId('Ordinary Drink-category-filter');
+    user.click(buttonDrink);
+    const recipeCard = await screen.findByText('A1');
+    expect(recipeCard).toBeInTheDocument();
+  });
+
+  test('Verifica se ao clicar no mesmo filtro volta ao padrao.', async () => {
+    const { user } = renderWithProvider(<App />, { route: '/drinks' });
+    const buttonDrink = await screen.findByTestId('Ordinary Drink-category-filter');
+    user.click(buttonDrink);
+    const recipeCard = await screen.findByText('A1');
+    expect(recipeCard).toBeInTheDocument();
+    user.click(buttonDrink);
+    const recipeCard2 = await screen.findByText('GG');
+    expect(recipeCard2).toBeInTheDocument();
+  });
+
+  test('Verifica se ao clicar no filtro All volta ao padrao.', async () => {
+    const { user } = renderWithProvider(<App />, { route: '/drinks' });
+    const buttonDrink = await screen.findByTestId('Ordinary Drink-category-filter');
+    user.click(buttonDrink);
+    const recipeCard = await screen.findByText('A1');
+    expect(recipeCard).toBeInTheDocument();
+    const buttonAll = await screen.findByTestId('All-category-filter');
+    user.click(buttonAll);
+    const recipeCard2 = await screen.findByText('GG');
+    expect(recipeCard2).toBeInTheDocument();
+  });
+
+  test('Verifica se dois filtros de drinks seguidos funcionam.', async () => {
+    const { user } = renderWithProvider(<App />, { route: '/drinks' });
+    const buttonDrink = await screen.findByTestId('Ordinary Drink-category-filter');
+    user.click(buttonDrink);
+    const recipeCard = await screen.findByText('A1');
+    expect(recipeCard).toBeInTheDocument();
+    const buttonCocktail = await screen.findByTestId('Cocktail-category-filter');
+    user.click(buttonCocktail);
+    const recipeCard2 = await screen.findByText('155 Belmont');
+    expect(recipeCard2).toBeInTheDocument();
+  });
+
+  test('Verifica se o botao all funciona.', async () => {
+    const { user } = renderWithProvider(<App />, { route: '/meals' });
+    const recipeCard1 = await screen.findByText('Corba');
+    expect(recipeCard1).toBeInTheDocument();
+    const buttonBeef = await screen.findByTestId('Beef-category-filter');
+    user.click(buttonBeef);
+    const recipeCard2 = await screen.findByText('Beef and Mustard Pie');
+    expect(recipeCard2).toBeInTheDocument();
+    const buttonAll = await screen.findByTestId('All-category-filter');
+    user.click(buttonAll);
+    const recipeCard3 = await screen.findByText('Corba');
+    expect(recipeCard3).toBeInTheDocument();
+  });
 });

@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import RecipeContext from '../context/RecipeContext';
 
 function Recipes() {
@@ -11,6 +12,11 @@ function Recipes() {
   } = useContext(RecipeContext);
   const sizeRecipes = Math.min(12, filteredRecipes.length);
   const sizeCategories = Math.min(5, categories.length);
+  const path = window.location.pathname;
+
+  const resetFilters = () => {
+    setFilteredCategories([]);
+  };
   if (loading) return <div>Loading...</div>;
   console.log(filteredRecipes);
   return (
@@ -19,7 +25,7 @@ function Recipes() {
         <button
           type="button"
           data-testid="All-category-filter"
-          onClick={ () => setFilteredCategories([]) }
+          onClick={ resetFilters }
         >
           All
         </button>
@@ -42,15 +48,21 @@ function Recipes() {
         ))}
       </div>
       { filteredRecipes.slice(0, sizeRecipes).map((recipe, index) => (
-        <div key={ index } data-testid={ `${index}-recipe-card` }>
-          <img
-            src={ recipe.image }
-            alt={ recipe.name }
-            data-testid={ `${index}-card-img` }
-          />
-          <p data-testid={ `${index}-card-name` }>{ recipe.name }</p>
+        <Link
+          key={ index }
+          to={ `${path}/${recipe.id}` }
+          data-testid={ `${index}-recipe-card` }
+        >
+          <div>
+            <img
+              src={ recipe.image }
+              alt={ recipe.name }
+              data-testid={ `${index}-card-img` }
+            />
+            <p data-testid={ `${index}-card-name` }>{ recipe.name }</p>
 
-        </div>
+          </div>
+        </Link>
       ))}
     </div>
   );
