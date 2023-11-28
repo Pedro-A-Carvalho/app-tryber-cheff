@@ -8,6 +8,9 @@ afterEach(() => vi.clearAllMocks());
 
 beforeEach(() => { global.fetch = vi.fn().mockImplementation(newFetch); });
 //   .mockResolvedValueOnce({
+const beefFilter = 'Beef-category-filter';
+const drinkFilter = 'Ordinary Drink-category-filter';
+const firstElementBeef = 'Beef and Mustard Pie';
 
 describe('Testa o componente Recipes.', () => {
   test('Verifica se todos os elementos estão na tela de meals.', async () => {
@@ -18,7 +21,7 @@ describe('Testa o componente Recipes.', () => {
     expect(recipeTitle).toBeInTheDocument();
     const recipeCategory = await screen.findByTestId('0-card-img');
     expect(recipeCategory).toBeInTheDocument();
-    const buttonBeef = await screen.findByTestId('Beef-category-filter');
+    const buttonBeef = await screen.findByTestId(beefFilter);
     expect(buttonBeef).toBeInTheDocument();
   });
 
@@ -30,23 +33,23 @@ describe('Testa o componente Recipes.', () => {
     expect(recipeTitle).toBeInTheDocument();
     const recipeCategory = await screen.findByTestId('0-card-img');
     expect(recipeCategory).toBeInTheDocument();
-    const buttonDrink = await screen.findByTestId('Ordinary Drink-category-filter');
+    const buttonDrink = await screen.findByTestId(drinkFilter);
     expect(buttonDrink).toBeInTheDocument();
   });
 
   test('Verifica se todos os elementos estão na tela de meals com filtro.', async () => {
     const { user } = renderWithProvider(<App />, { route: '/meals' });
-    const buttonBeef = await screen.findByTestId('Beef-category-filter');
+    const buttonBeef = await screen.findByTestId(beefFilter);
     user.click(buttonBeef);
-    const recipeCard = await screen.findByText('Beef and Mustard Pie');
+    const recipeCard = await screen.findByText(firstElementBeef);
     expect(recipeCard).toBeInTheDocument();
   });
 
   test('Verifica se ao clicar no mesmo filtro volta ao padrao.', async () => {
     const { user } = renderWithProvider(<App />, { route: '/meals' });
-    const buttonBeef = await screen.findByTestId('Beef-category-filter');
+    const buttonBeef = await screen.findByTestId(beefFilter);
     user.click(buttonBeef);
-    const recipeCard = await screen.findByText('Beef and Mustard Pie');
+    const recipeCard = await screen.findByText(firstElementBeef);
     expect(recipeCard).toBeInTheDocument();
     user.click(buttonBeef);
     const recipeCard2 = await screen.findByText('Corba');
@@ -55,7 +58,7 @@ describe('Testa o componente Recipes.', () => {
 
   test('Verifica se todos os elementos estão na tela de drinks com filtro.', async () => {
     const { user } = renderWithProvider(<App />, { route: '/drinks' });
-    const buttonDrink = await screen.findByTestId('Ordinary Drink-category-filter');
+    const buttonDrink = await screen.findByTestId(drinkFilter);
     user.click(buttonDrink);
     const recipeCard = await screen.findByText('A1');
     expect(recipeCard).toBeInTheDocument();
@@ -63,7 +66,7 @@ describe('Testa o componente Recipes.', () => {
 
   test('Verifica se ao clicar no mesmo filtro volta ao padrao.', async () => {
     const { user } = renderWithProvider(<App />, { route: '/drinks' });
-    const buttonDrink = await screen.findByTestId('Ordinary Drink-category-filter');
+    const buttonDrink = await screen.findByTestId(drinkFilter);
     user.click(buttonDrink);
     const recipeCard = await screen.findByText('A1');
     expect(recipeCard).toBeInTheDocument();
@@ -74,7 +77,7 @@ describe('Testa o componente Recipes.', () => {
 
   test('Verifica se ao clicar no filtro All volta ao padrao.', async () => {
     const { user } = renderWithProvider(<App />, { route: '/drinks' });
-    const buttonDrink = await screen.findByTestId('Ordinary Drink-category-filter');
+    const buttonDrink = await screen.findByTestId(drinkFilter);
     user.click(buttonDrink);
     const recipeCard = await screen.findByText('A1');
     expect(recipeCard).toBeInTheDocument();
@@ -86,7 +89,7 @@ describe('Testa o componente Recipes.', () => {
 
   test('Verifica se dois filtros de drinks seguidos funcionam.', async () => {
     const { user } = renderWithProvider(<App />, { route: '/drinks' });
-    const buttonDrink = await screen.findByTestId('Ordinary Drink-category-filter');
+    const buttonDrink = await screen.findByTestId(drinkFilter);
     user.click(buttonDrink);
     const recipeCard = await screen.findByText('A1');
     expect(recipeCard).toBeInTheDocument();
@@ -100,9 +103,9 @@ describe('Testa o componente Recipes.', () => {
     const { user } = renderWithProvider(<App />, { route: '/meals' });
     const recipeCard1 = await screen.findByText('Corba');
     expect(recipeCard1).toBeInTheDocument();
-    const buttonBeef = await screen.findByTestId('Beef-category-filter');
+    const buttonBeef = await screen.findByTestId(beefFilter);
     user.click(buttonBeef);
-    const recipeCard2 = await screen.findByText('Beef and Mustard Pie');
+    const recipeCard2 = await screen.findByText(firstElementBeef);
     expect(recipeCard2).toBeInTheDocument();
     const buttonAll = await screen.findByTestId('All-category-filter');
     user.click(buttonAll);
