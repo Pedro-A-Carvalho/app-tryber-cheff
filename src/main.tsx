@@ -7,9 +7,9 @@ import TotalProvider from './utils/TotalProvider';
 ReactDOM
   .createRoot(document.getElementById('root') as HTMLElement)
   .render(
-    <BrowserRouter>
-      <TotalProvider>
+    <TotalProvider>
+      <BrowserRouter>
         <App />
-      </TotalProvider>
-    </BrowserRouter>,
+      </BrowserRouter>
+    </TotalProvider>,
   );
