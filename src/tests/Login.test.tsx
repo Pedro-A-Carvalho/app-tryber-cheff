@@ -2,10 +2,11 @@ import { screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import { renderWithRouter } from '../utils/renderWithRouter';
+import renderWithProvider from '../utils/renderWithProvider';
 
 describe('Testa tela de Login', () => {
   test('Verifica a existência de inputs', () => {
-    renderWithRouter(<App />);
+    renderWithProvider(<App />);
     const emailInput = screen.getByTestId('email-input');
     expect(emailInput).toBeInTheDocument();
     const passwordInput = screen.getByTestId('password-input');
@@ -14,7 +15,7 @@ describe('Testa tela de Login', () => {
     expect(enterButton).toBeInTheDocument();
   });
   test('Verifica habilitação do botão', async () => {
-    renderWithRouter(<App />);
+    renderWithProvider(<App />);
     const emailInput = screen.getByTestId('email-input');
     const passwordInput = screen.getByTestId('password-input');
     const enterButton = screen.getByTestId('login-submit-btn');

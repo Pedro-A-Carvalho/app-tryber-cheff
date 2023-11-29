@@ -20,7 +20,7 @@ function Footer() {
       <Container>
         <Nav className="me-auto nav-bar-footer justify-content-around">
           <Navbar.Brand
-            href="/Drinks"
+            href="/drinks"
             data-testid="drinks-bottom-btn"
           >
             <img
@@ -31,7 +31,7 @@ function Footer() {
             />
           </Navbar.Brand>
           <Navbar.Brand
-            href="/Meals"
+            href="/meals"
             data-testid="meals-bottom-btn"
           >
             <img
