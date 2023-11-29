@@ -10,7 +10,7 @@ function Meals() {
     <>
       <Header>Meals</Header>
       <SearchBar
-        endIngredients={ `https://www.themealdb.com/api/json/v1/1/list.php?i=${search}` }
+        endIngredients={ `https://www.themealdb.com/api/json/v1/1/filter.php?i=${search}` }
         endName={ `https://www.themealdb.com/api/json/v1/1/search.php?s=${search}` }
         endFirstLetter={ `https://www.themealdb.com/api/json/v1/1/search.php?f=${search}` }
       />

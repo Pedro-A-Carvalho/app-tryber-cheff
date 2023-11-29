@@ -1,10 +1,12 @@
 import React, { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import SearchContext from '../context/SearchContext';
 import { SearchBarTypes } from '../types';
 
 function SearchBar({ endIngredients, endName, endFirstLetter }: SearchBarTypes) {
   const { values: { search } } = useContext(SearchContext);
   const [searchType, setSearchType] = useState('');
+  const navigate = useNavigate();
 
   const handleSearchTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchType(event.target.value);
@@ -24,12 +26,30 @@ function SearchBar({ endIngredients, endName, endFirstLetter }: SearchBarTypes) 
         return;
       }
     }
-    console.log(endpoint);
+
     const response = await fetch(endpoint);
     const data = await response.json();
+    const path = window.location.pathname;
+    let recipe = [];
+    if (path === '/meals') {
+      const { meals } = data;
+      recipe = meals;
+    } else {
+      const { drinks } = data;
+      recipe = drinks;
+    }
+    if (recipe && recipe.length === 1) {
+      const recipeId = recipe[0].idMeal || recipe[0].idDrink;
+
+      const redirectUrl = `${path}/${recipeId}`;
+
+      navigate(redirectUrl);
+    }
+    if (recipe === null) {
+      window.alert("Sorry, we haven't found any recipes for these filters");
+    }
     console.log(data);
   };
-
   return (
     <div>
       <div>
