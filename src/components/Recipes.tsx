@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+
 import RecipeContext from '../context/RecipeContext';
 
 function Recipes() {
@@ -14,6 +15,7 @@ function Recipes() {
   const sizeCategories = Math.min(5, categories.length);
   const location = useLocation();
   const path = location.pathname;
+
 
   const resetFilters = () => {
     setFilteredCategories([]);

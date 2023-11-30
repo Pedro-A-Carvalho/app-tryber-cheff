@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import SearchBar from './SearchBar';
 import Footer from '../components/Footer';
 import SearchContext from '../context/SearchContext';
+
 import Recipes from '../components/Recipes';
 
 function Meals() {

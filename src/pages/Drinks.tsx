@@ -10,6 +10,7 @@ function Drinks() {
   return (
     <>
       <Header>Drinks</Header>
+
       <SearchBar
         endIngredients={ `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${search}` }
         endName={ `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${search}` }

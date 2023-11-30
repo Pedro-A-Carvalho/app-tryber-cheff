@@ -20,6 +20,7 @@ export type SearchContextType = {
   }
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
+
 export type MealType = {
   idMeal: string,
   strMeal: string,

@@ -6,6 +6,7 @@ describe('Testa o componente Header.', () => {
   test('Verifica se todos os elementos estão na tela.', () => {
     renderWithProviderTotal(<App />, { route: '/meals' });
 
+
     const btnProfile = screen.getByTestId('profile-top-btn');
     expect(btnProfile).toBeInTheDocument();
 
@@ -27,6 +28,7 @@ describe('Testa o componente Header.', () => {
 
   test('Verifica se ao clicar no botão de perfil é direcionado para o path /profile.', async () => {
     const { user } = renderWithProviderTotal(<App />, { route: '/meals' });
+
 
     const btnProfile = screen.getByTestId('profile-top-btn');
     await user.click(btnProfile);
