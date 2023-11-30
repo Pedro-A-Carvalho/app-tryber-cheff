@@ -16,7 +16,6 @@ function Recipes() {
   const location = useLocation();
   const path = location.pathname;
 
-
   const resetFilters = () => {
     setFilteredCategories([]);
   };

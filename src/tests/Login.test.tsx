@@ -5,7 +5,6 @@ import renderWithProviderTotal from '../utils/renderWithProviderTotal';
 
 describe('Testa tela de Login', () => {
   test('Verifica a existência de inputs', () => {
-
     const emailInput = screen.getByTestId('email-input');
     expect(emailInput).toBeInTheDocument();
     const passwordInput = screen.getByTestId('password-input');

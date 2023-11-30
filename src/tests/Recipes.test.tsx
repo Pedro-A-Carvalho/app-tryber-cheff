@@ -4,7 +4,6 @@ import App from '../App';
 import newFetch from '../../cypress/mocks/fetch';
 import renderWithProviderTotal from '../utils/renderWithProviderTotal';
 
-
 afterEach(() => vi.clearAllMocks());
 
 beforeEach(() => { global.fetch = vi.fn().mockImplementation(newFetch); });
