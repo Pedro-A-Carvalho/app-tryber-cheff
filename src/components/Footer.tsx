@@ -21,10 +21,10 @@ function Footer() {
         <Nav className="me-auto nav-bar-footer justify-content-around">
           <Navbar.Brand
             href="/drinks"
-            data-testid="drinks-bottom-btn"
           >
             <img
               src="src/images/drinkIcon.svg"
+              data-testid="drinks-bottom-btn"
               width="30"
               height="30"
               alt="Ícone de bebidas"
@@ -32,10 +32,10 @@ function Footer() {
           </Navbar.Brand>
           <Navbar.Brand
             href="/meals"
-            data-testid="meals-bottom-btn"
           >
             <img
               src="src/images/mealIcon.svg"
+              data-testid="meals-bottom-btn"
               width="30"
               height="30"
               alt="Ícone de comidas"

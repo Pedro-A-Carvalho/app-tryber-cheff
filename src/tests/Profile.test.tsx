@@ -1,9 +1,9 @@
 import { screen, fireEvent, waitFor } from '@testing-library/react';
-import { renderWithRouter } from '../utils/renderWithRouter';
 import App from '../App';
+import renderWithProviderTotal from '../utils/renderWithProviderTotal';
 
 test('Verifica se a página é renderizada corretamente', () => {
-  renderWithRouter(<App />, { route: '/profile' });
+  renderWithProviderTotal(<App />, { route: '/profile' });
 
   const titleElement = screen.getByTestId('page-title');
   expect(titleElement).toBeInTheDocument();
@@ -19,7 +19,7 @@ test('Verifica se a página é renderizada corretamente', () => {
 });
 
 test('Testa botão de receitas feitas', async () => {
-  renderWithRouter(<App />, { route: '/profile' });
+  renderWithProviderTotal(<App />, { route: '/profile' });
 
   const doneBtn = screen.getByTestId('profile-done-btn');
   const pageTitle = screen.getByText('Done Recipes');
@@ -31,7 +31,7 @@ test('Testa botão de receitas feitas', async () => {
 });
 
 // test('Testa botão de receitas favoritas', async () => {
-//   renderWithRouter(<App />, { route: '/profile' });
+//   renderWithProviderTotal(<App />, { route: '/profile' });
 
 //   const faveBtn = screen.getByTestId('favorite-done-btn');
 //   const pageTitle2 = screen.getByText('Favorite Recipes');
@@ -43,7 +43,7 @@ test('Testa botão de receitas feitas', async () => {
 // });
 
 test('Verifica se o logout é feito corretamente', async () => {
-  renderWithRouter(<App />, { route: '/profile' });
+  renderWithProviderTotal(<App />, { route: '/profile' });
 
   const logoutButton = screen.getByTestId('profile-logout-btn');
   fireEvent.click(logoutButton);
@@ -60,7 +60,7 @@ test('exibe o e-mail salvo na localStorage', () => {
   const storedUser = JSON.stringify(mockUser);
   localStorage.setItem('user', storedUser);
 
-  renderWithRouter(<App />, { route: '/profile' });
+  renderWithProviderTotal(<App />, { route: '/profile' });
 
   const emailElement = screen.getByTestId('profile-email');
   expect(emailElement).toBeInTheDocument();
