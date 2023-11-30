@@ -2,14 +2,14 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
-import RecipeProvider from './context/RecipeProvider';
+import TotalProvider from './utils/TotalProvider';
 
 ReactDOM
   .createRoot(document.getElementById('root') as HTMLElement)
   .render(
-    <RecipeProvider>
+    <TotalProvider>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </RecipeProvider>,
+    </TotalProvider>,
   );
