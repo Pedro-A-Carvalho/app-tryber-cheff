@@ -1,4 +1,4 @@
-import { screen, act } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { vi } from 'vitest';
 import App from '../App';
 import renderWithProviderTotal from '../utils/renderWithProviderTotal';
@@ -33,10 +33,10 @@ describe('Testa Search Bar', () => {
     const ingredientSearchInput = screen.getByTestId(ingredienteRadio);
     await user.click(ingredientSearchInput);
     const searchButton = screen.getByTestId(execSearchButton);
-    // await act(async () => {
+
     await user.type(search, 'Chicken');
     await user.click(searchButton);
-    // });
+
     expect(searchButton).toBeEnabled();
   });
 
@@ -48,10 +48,10 @@ describe('Testa Search Bar', () => {
     const nameSearchInput = screen.getByTestId(nameRadio);
     await user.click(nameSearchInput);
     const searchButton = screen.getByTestId(execSearchButton);
-    await act(async () => {
-      await user.type(search, 'Arrabiata');
-      await user.click(searchButton);
-    });
+
+    await user.type(search, 'Arrabiata');
+    await user.click(searchButton);
+
     expect(searchButton).toBeEnabled();
   });
   test('Verifica habilitação do botão em ingredientes na rota Drinks', async () => {
@@ -62,10 +62,10 @@ describe('Testa Search Bar', () => {
     const ingredientSearchInput = screen.getByTestId(ingredienteRadio);
     await user.click(ingredientSearchInput);
     const searchButton = screen.getByTestId(execSearchButton);
-    await act(async () => {
-      await user.type(search, 'Light rum');
-      await user.click(searchButton);
-    });
+
+    await user.type(search, 'Light rum');
+    await user.click(searchButton);
+
     expect(searchButton).toBeEnabled();
   });
 
@@ -77,10 +77,10 @@ describe('Testa Search Bar', () => {
     const nameSearchInput = screen.getByTestId(nameRadio);
     await user.click(nameSearchInput);
     const searchButton = screen.getByTestId(execSearchButton);
-    await act(async () => {
-      await user.type(searchTop, 'Aquamarine');
-      await user.click(searchButton);
-    });
+
+    await user.type(searchTop, 'Aquamarine');
+    await user.click(searchButton);
+
     expect(searchButton).toBeEnabled();
   });
 
@@ -93,10 +93,47 @@ describe('Testa Search Bar', () => {
     const nameSearchInput = screen.getByTestId(nameRadio);
     await user.click(nameSearchInput);
     const searchButton = screen.getByTestId(execSearchButton);
-    await act(async () => {
-      await user.type(search, 'xablau');
-      await user.click(searchButton);
-    });
+
+    await user.type(search, 'xablau');
+    await user.click(searchButton);
+
     expect(global.alert).toHaveBeenCalledTimes(1);
+  });
+
+  test('Verifica se o path name é chamado corretamente.', async () => {
+    global.alert = vi.fn();
+    const { user } = renderWithProviderTotal(<App />, { route: '/meals' });
+
+    const cardCorda = await screen.findByRole('img', { name: /corba/i });
+    expect(cardCorda).toBeInTheDocument();
+
+    await user.click(cardCorda);
+    expect(window.location.pathname).toBe('/meals/52977');
+  });
+
+  test('test.', async () => {
+    const search = 'ab';
+
+    global.alert = vi.fn();
+    const { user } = renderWithProviderTotal(<App />, { route: '/meals' });
+
+    const btnViewSearch = screen.getByTestId('search-top-btn');
+    expect(btnViewSearch).toBeInTheDocument();
+    const radioBtn = screen.getByTestId('first-letter-search-radio');
+    expect(radioBtn).toBeInTheDocument();
+
+    await user.click(btnViewSearch);
+
+    const inputSearch = screen.getByTestId('search-input');
+    expect(inputSearch).toBeInTheDocument();
+
+    const btnSearch = screen.getByTestId('exec-search-btn');
+    expect(btnSearch).toBeInTheDocument();
+
+    await user.click(radioBtn);
+    await user.type(inputSearch, search);
+    await user.click(btnSearch);
+
+    expect(window.alert).toHaveBeenCalledWith('Your search must have only 1 (one) character');
   });
 });

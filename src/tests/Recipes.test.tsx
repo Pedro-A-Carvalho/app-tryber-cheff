@@ -14,7 +14,7 @@ const firstElementBeef = 'Beef and Mustard Pie';
 
 describe('Testa o componente Recipes.', () => {
   test('Verifica se todos os elementos estão na tela de meals.', async () => {
-    const { user } = renderWithProviderTotal(<App />, { route: '/meals' });
+    renderWithProviderTotal(<App />, { route: '/meals' });
 
     const recipeCard = await screen.findByTestId('0-recipe-card');
     expect(recipeCard).toBeInTheDocument();
@@ -27,7 +27,7 @@ describe('Testa o componente Recipes.', () => {
   });
 
   test('Verifica se todos os elementos estão na tela de drink.', async () => {
-    const { user } = renderWithProviderTotal(<App />, { route: '/drinks' });
+    renderWithProviderTotal(<App />, { route: '/drinks' });
 
     const recipeCard = await screen.findByTestId('0-recipe-card');
     expect(recipeCard).toBeInTheDocument();
@@ -43,7 +43,8 @@ describe('Testa o componente Recipes.', () => {
     const { user } = renderWithProviderTotal(<App />, { route: '/meals' });
 
     const buttonBeef = await screen.findByTestId(beefFilter);
-    user.click(buttonBeef);
+    await user.click(buttonBeef);
+    // expect(global.fetch).toHaveBeenCalledWith('');
     const recipeCard = await screen.findByText(firstElementBeef);
     expect(recipeCard).toBeInTheDocument();
   });
@@ -52,10 +53,10 @@ describe('Testa o componente Recipes.', () => {
     const { user } = renderWithProviderTotal(<App />, { route: '/meals' });
 
     const buttonBeef = await screen.findByTestId(beefFilter);
-    user.click(buttonBeef);
+    await user.click(buttonBeef);
     const recipeCard = await screen.findByText(firstElementBeef);
     expect(recipeCard).toBeInTheDocument();
-    user.click(buttonBeef);
+    await user.click(buttonBeef);
     const recipeCard2 = await screen.findByText('Corba');
     expect(recipeCard2).toBeInTheDocument();
   });
@@ -64,8 +65,8 @@ describe('Testa o componente Recipes.', () => {
     const { user } = renderWithProviderTotal(<App />, { route: '/drinks' });
 
     const buttonDrink = await screen.findByTestId(drinkFilter);
-    user.click(buttonDrink);
-    const recipeCard = await screen.findByText('A1');
+    await user.click(buttonDrink);
+    const recipeCard = await screen.findByText('410 Gone');
     expect(recipeCard).toBeInTheDocument();
   });
 
@@ -73,10 +74,10 @@ describe('Testa o componente Recipes.', () => {
     const { user } = renderWithProviderTotal(<App />, { route: '/drinks' });
 
     const buttonDrink = await screen.findByTestId(drinkFilter);
-    user.click(buttonDrink);
-    const recipeCard = await screen.findByText('A1');
+    await user.click(buttonDrink);
+    const recipeCard = await screen.findByText('410 Gone');
     expect(recipeCard).toBeInTheDocument();
-    user.click(buttonDrink);
+    await user.click(buttonDrink);
     const recipeCard2 = await screen.findByText('GG');
     expect(recipeCard2).toBeInTheDocument();
   });
@@ -85,11 +86,11 @@ describe('Testa o componente Recipes.', () => {
     const { user } = renderWithProviderTotal(<App />, { route: '/drinks' });
 
     const buttonDrink = await screen.findByTestId(drinkFilter);
-    user.click(buttonDrink);
-    const recipeCard = await screen.findByText('A1');
+    await user.click(buttonDrink);
+    const recipeCard = await screen.findByText('410 Gone');
     expect(recipeCard).toBeInTheDocument();
     const buttonAll = await screen.findByTestId('All-category-filter');
-    user.click(buttonAll);
+    await user.click(buttonAll);
     const recipeCard2 = await screen.findByText('GG');
     expect(recipeCard2).toBeInTheDocument();
   });
@@ -98,11 +99,11 @@ describe('Testa o componente Recipes.', () => {
     const { user } = renderWithProviderTotal(<App />, { route: '/drinks' });
 
     const buttonDrink = await screen.findByTestId(drinkFilter);
-    user.click(buttonDrink);
-    const recipeCard = await screen.findByText('A1');
+    await user.click(buttonDrink);
+    const recipeCard = await screen.findByText('410 Gone');
     expect(recipeCard).toBeInTheDocument();
     const buttonCocktail = await screen.findByTestId('Cocktail-category-filter');
-    user.click(buttonCocktail);
+    await user.click(buttonCocktail);
     const recipeCard2 = await screen.findByText('155 Belmont');
     expect(recipeCard2).toBeInTheDocument();
   });
@@ -113,11 +114,11 @@ describe('Testa o componente Recipes.', () => {
     const recipeCard1 = await screen.findByText('Corba');
     expect(recipeCard1).toBeInTheDocument();
     const buttonBeef = await screen.findByTestId(beefFilter);
-    user.click(buttonBeef);
+    await user.click(buttonBeef);
     const recipeCard2 = await screen.findByText(firstElementBeef);
     expect(recipeCard2).toBeInTheDocument();
     const buttonAll = await screen.findByTestId('All-category-filter');
-    user.click(buttonAll);
+    await user.click(buttonAll);
     const recipeCard3 = await screen.findByText('Corba');
     expect(recipeCard3).toBeInTheDocument();
   });

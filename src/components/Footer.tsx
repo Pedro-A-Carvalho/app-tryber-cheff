@@ -21,24 +21,24 @@ function Footer() {
         <Nav className="me-auto nav-bar-footer justify-content-around">
           <Navbar.Brand
             href="/drinks"
-            data-testid="drinks-bottom-btn"
           >
             <img
               src="src/images/drinkIcon.svg"
               width="30"
               height="30"
               alt="Ícone de bebidas"
+              data-testid="drinks-bottom-btn"
             />
           </Navbar.Brand>
           <Navbar.Brand
             href="/meals"
-            data-testid="meals-bottom-btn"
           >
             <img
               src="src/images/mealIcon.svg"
               width="30"
               height="30"
               alt="Ícone de comidas"
+              data-testid="meals-bottom-btn"
             />
           </Navbar.Brand>
         </Nav>
