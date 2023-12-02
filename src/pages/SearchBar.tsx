@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import SearchContext from '../context/SearchContext';
 import { SearchBarTypes } from '../types';
 
@@ -7,6 +7,7 @@ function SearchBar({ endIngredients, endName, endFirstLetter }: SearchBarTypes) 
   const { values: { search } } = useContext(SearchContext);
   const [searchType, setSearchType] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSearchTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchType(event.target.value);
@@ -29,7 +30,7 @@ function SearchBar({ endIngredients, endName, endFirstLetter }: SearchBarTypes) 
 
     const response = await fetch(endpoint);
     const data = await response.json();
-    const path = window.location.pathname;
+    const path = location.pathname;
     let recipe = [];
     if (path === '/meals') {
       const { meals } = data;

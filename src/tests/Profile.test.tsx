@@ -1,4 +1,4 @@
-import { screen, fireEvent, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import App from '../App';
 import renderWithProviderTotal from '../utils/renderWithProviderTotal';
 
@@ -19,11 +19,11 @@ test('Verifica se a página é renderizada corretamente', () => {
 });
 
 test('Testa botão de receitas feitas', async () => {
-  renderWithProviderTotal(<App />, { route: '/profile' });
+  const { user } = renderWithProviderTotal(<App />, { route: '/profile' });
 
   const doneBtn = screen.getByTestId('profile-done-btn');
   const pageTitle = screen.getByText('Done Recipes');
-  fireEvent.click(doneBtn);
+  await user.click(doneBtn);
 
   await waitFor(() => {
     expect(pageTitle).toBeInTheDocument();
@@ -43,10 +43,10 @@ test('Testa botão de receitas feitas', async () => {
 // });
 
 test('Verifica se o logout é feito corretamente', async () => {
-  renderWithProviderTotal(<App />, { route: '/profile' });
+  const { user } = renderWithProviderTotal(<App />, { route: '/profile' });
 
   const logoutButton = screen.getByTestId('profile-logout-btn');
-  fireEvent.click(logoutButton);
+  await user.click(logoutButton);
 
   await waitFor(() => {
     expect(screen.getByTestId('email-input')).toBeInTheDocument();
