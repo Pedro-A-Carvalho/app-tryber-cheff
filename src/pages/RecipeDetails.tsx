@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Slider from 'react-slick';
 import { RecipeAllTypes } from '../types';
 import './RecipeDetails.css';
 import 'slick-carousel/slick/slick.css';
+import shareIcon from '../images/shareIcon.svg';
+import favoriteIcon from '../images/whiteHeartIcon.svg';
 
 function RecipeDetails() {
   const [recipe, setRecipe] = useState<RecipeAllTypes[]>([]);
   const [ingredients, setIngredients] = useState(['']);
   const [measure, setMeasure] = useState(['']);
   const [recommended, setRecommended] = useState<RecipeAllTypes[]>([]);
+  const [copyLink, setCopyLink] = useState(false);
   const { id }: any = useParams();
   const location = useLocation();
   const path = location.pathname;
@@ -17,6 +20,7 @@ function RecipeDetails() {
   const newPath = path.slice(1);
   const indexCaractere = newPath.indexOf('/');
   const getPathName = newPath.slice(0, indexCaractere);
+  const navigate = useNavigate();
 
   const pageMeals = async () => {
     const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
@@ -100,6 +104,16 @@ function RecipeDetails() {
   }];
   // ---
 
+  const handleCopyClick = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setCopyLink(true);
+    } catch (error) {
+      console.error('Erro ao copiar para a área de transferência:', error);
+      setCopyLink(false);
+    }
+  };
+
   return (
     <>
       {
@@ -109,6 +123,7 @@ function RecipeDetails() {
               src={ item.strMealThumb || item.strDrinkThumb }
               alt="recipe"
               data-testid="recipe-photo"
+              style={ { width: '100vw', height: 'auto' } }
             />
 
             <h1 data-testid="recipe-title">{item.strMeal || item.strDrink}</h1>
@@ -130,12 +145,10 @@ function RecipeDetails() {
                           data-testid={ `${indexIngredient}-ingredient-name-and-measure` }
                         >
                           {`${ingredient} ${measure[indexIngredient]}`}
-
                         </li>
                       </ul>
                     ) : null
                 ))
-
           }
             </div>
 
@@ -174,7 +187,6 @@ function RecipeDetails() {
                     data-testid={ `${index}-recommendation-title` }
                   >
                     {card.strDrink || card.strMeal}
-
                   </p>
                 </div>
               ))}
@@ -185,24 +197,40 @@ function RecipeDetails() {
                 <button
                   data-testid="start-recipe-btn"
                   style={ { position: 'fixed', bottom: '0', left: '0', width: '100vw' } }
+                  onClick={ () => navigate(`${path}/in-progress`) }
                 >
                   Continue Recipe
-
                 </button>
               ) : (
                 <button
                   data-testid="start-recipe-btn"
                   style={ { position: 'fixed', bottom: '0', left: '0', width: '100vw' } }
+                  onClick={ () => navigate(`${path}/in-progress`) }
                 >
                   Start Recipe
-
                 </button>
               )}
 
-          </div>
+            <button
+              data-testid="share-btn"
+              style={ { marginBottom: '10vh' } }
+              onClick={ handleCopyClick }
+            >
+              <img src={ shareIcon } alt="Share" />
+            </button>
 
+            <button
+              data-testid="favorite-btn"
+            >
+              <img src={ favoriteIcon } alt="Share" />
+            </button>
+
+            {
+            copyLink && <span>Link copied!</span>
+          }
+          </div>
         ))
-}
+      }
     </>
   );
 }
