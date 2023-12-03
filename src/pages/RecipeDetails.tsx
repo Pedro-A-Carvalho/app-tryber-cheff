@@ -168,6 +168,14 @@ function RecipeDetails() {
               ))}
             </Slider>
 
+            <button
+              data-testid="start-recipe-btn"
+              style={ { position: 'fixed', bottom: '0', left: '0', width: '100vw' } }
+            >
+              Start Recipe
+
+            </button>
+
           </div>
 
         ))
