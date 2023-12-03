@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
+import Slider from 'react-slick';
 import { RecipeAllTypes } from '../types';
 import './RecipeDetails.css';
+import 'slick-carousel/slick/slick.css';
 
 function RecipeDetails() {
   const [recipe, setRecipe] = useState<RecipeAllTypes[]>([]);
@@ -78,6 +80,14 @@ function RecipeDetails() {
 
   console.log(ingredients);
 
+  const settings = {
+    infinite: false,
+    slidesToShow: 2,
+    slidesToScroll: 2,
+    speed: 700,
+    arrows: true,
+  };
+
   return (
     <>
       {
@@ -136,7 +146,7 @@ function RecipeDetails() {
           }
 
             <h2>Recommended</h2>
-            <div className="scroll-container">
+            <Slider { ...settings }>
               {cards.map((card, index) => (
                 <div
                   key={ index }
@@ -146,6 +156,7 @@ function RecipeDetails() {
                   <img
                     src={ card.strDrinkThumb || card.strMealThumb }
                     alt={ card.strDrink || card.strMeal }
+                    style={ { width: 'auto', height: '10em' } }
                   />
                   <p
                     data-testid={ `${index}-recommendation-title` }
@@ -155,7 +166,7 @@ function RecipeDetails() {
                   </p>
                 </div>
               ))}
-            </div>
+            </Slider>
 
           </div>
 

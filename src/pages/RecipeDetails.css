@@ -1,10 +1,4 @@
-.scroll-container {
-    display: flex;
-    overflow-x: auto;
-    width: 360px;
-    white-space: nowrap;
-  }
-  
+
   .card {
     flex: 0 0 160px;
     margin: 8px;
