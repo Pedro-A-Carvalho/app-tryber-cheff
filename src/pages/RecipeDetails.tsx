@@ -10,10 +10,13 @@ function RecipeDetails() {
   const [ingredients, setIngredients] = useState(['']);
   const [measure, setMeasure] = useState(['']);
   const [recommended, setRecommended] = useState<RecipeAllTypes[]>([]);
-  const { id } = useParams();
+  const { id }: any = useParams();
   const location = useLocation();
   const path = location.pathname;
   const cards = recommended.slice(0, 6);
+  const newPath = path.slice(1);
+  const indexCaractere = newPath.indexOf('/');
+  const getPathName = newPath.slice(0, indexCaractere);
 
   const pageMeals = async () => {
     const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
@@ -78,8 +81,6 @@ function RecipeDetails() {
     requestApi();
   }, []);
 
-  console.log(ingredients);
-
   const settings = {
     infinite: false,
     slidesToShow: 2,
@@ -87,6 +88,17 @@ function RecipeDetails() {
     speed: 700,
     arrows: true,
   };
+
+  // mock localStorage temporário até tela de progress ser implementada
+  const inProgressRecipesTeste: any = [{
+    drinks: {
+      178319: [],
+    },
+    meals: {
+      52771: [],
+    },
+  }];
+  // ---
 
   return (
     <>
@@ -168,13 +180,24 @@ function RecipeDetails() {
               ))}
             </Slider>
 
-            <button
-              data-testid="start-recipe-btn"
-              style={ { position: 'fixed', bottom: '0', left: '0', width: '100vw' } }
-            >
-              Start Recipe
+            {Object.keys(inProgressRecipesTeste[0][getPathName]).includes(id)
+              ? (
+                <button
+                  data-testid="start-recipe-btn"
+                  style={ { position: 'fixed', bottom: '0', left: '0', width: '100vw' } }
+                >
+                  Continue Recipe
 
-            </button>
+                </button>
+              ) : (
+                <button
+                  data-testid="start-recipe-btn"
+                  style={ { position: 'fixed', bottom: '0', left: '0', width: '100vw' } }
+                >
+                  Start Recipe
+
+                </button>
+              )}
 
           </div>
 
