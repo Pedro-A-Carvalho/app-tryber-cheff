@@ -1,0 +1,16 @@
+.scroll-container {
+    display: flex;
+    overflow-x: auto;
+    width: 360px;
+    white-space: nowrap;
+  }
+  
+  .card {
+    flex: 0 0 160px;
+    margin: 8px;
+    padding: 16px;
+    background-color: white;
+    color: black;
+    border-radius: 8px;
+    box-sizing: border-box;
+  }

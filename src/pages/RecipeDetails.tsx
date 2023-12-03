@@ -1,64 +1,76 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { RecipeDrinksTypes, RecipeMealsTypes } from '../types';
+import { RecipeAllTypes } from '../types';
+import './RecipeDetails.css';
 
 function RecipeDetails() {
-  const [recipe, setRecipe] = useState<RecipeMealsTypes[] & RecipeDrinksTypes[]>([]);
+  const [recipe, setRecipe] = useState<RecipeAllTypes[]>([]);
   const [ingredients, setIngredients] = useState(['']);
   const [measure, setMeasure] = useState(['']);
-  const [recommended, setRecommended] = useState();
+  const [recommended, setRecommended] = useState<RecipeAllTypes[]>([]);
   const { id } = useParams();
   const location = useLocation();
   const path = location.pathname;
+  const cards = recommended.slice(0, 6);
+
+  const pageMeals = async () => {
+    const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
+    const data = await response.json();
+    console.log(data.meals);
+    setRecipe(data.meals);
+
+    // pega ingredientes
+    const filterIngredients = Object.keys(data.meals[0])
+      .filter((item) => item.startsWith('strIngredient'));
+    const getIngredient = filterIngredients
+      .map((ingredient) => data.meals[0][ingredient]);
+    setIngredients(getIngredient);
+    // pega quantidades
+    const filterMeasure = Object.keys(data.meals[0])
+      .filter((item) => item.startsWith('strMeasure'));
+    const getMeasure = filterMeasure
+      .map((measureItem) => data.meals[0][measureItem]);
+    setMeasure(getMeasure);
+
+    const responseDrink = await fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
+    const dataDrink = await responseDrink.json();
+    setRecommended(dataDrink.drinks);
+    console.log(dataDrink.drinks);
+  };
+
+  const pageDrinks = async () => {
+    const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`);
+    const data = await response.json();
+    console.log(data.drinks);
+    setRecipe(data.drinks);
+
+    // pega ingredientes
+    const filterIngredients = Object.keys(data.drinks[0])
+      .filter((item) => item.startsWith('strIngredient'));
+    const getIngredients = filterIngredients
+      .map((ingredient) => data.drinks[0][ingredient]);
+    setIngredients(getIngredients);
+    // pega quantidades
+    const filterMeasure = Object.keys(data.drinks[0])
+      .filter((item) => item.startsWith('strMeasure'));
+    const getMeasure = filterMeasure
+      .map((measureItem) => data.drinks[0][measureItem]);
+    setMeasure(getMeasure);
+    console.log(getMeasure);
+
+    const responseMeal = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+    const dataMeal = await responseMeal.json();
+    setRecommended(dataMeal.meals);
+    console.log(dataMeal.meals);
+  };
 
   useEffect(() => {
     const requestApi = async () => {
       if (path === `/meals/${id}`) {
-        const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
-        const data = await response.json();
-        console.log(data.meals);
-        setRecipe(data.meals);
-
-        // pega ingredientes
-        const filterIngredients = Object.keys(data.meals[0])
-          .filter((item) => item.startsWith('strIngredient'));
-        const getIngredients = filterIngredients
-          .map((ingredient) => data.meals[0][ingredient]);
-        setIngredients(getIngredients);
-
-        // pega quantidades
-        const filterMeasure = Object.keys(data.meals[0])
-          .filter((item) => item.startsWith('strMeasure'));
-        const getMeasure = filterMeasure
-          .map((measureItem) => data.meals[0][measureItem]);
-        setMeasure(getMeasure);
-        const responseDrink = await fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
-        console.log(responseDrink);
-        return responseDrink;
+        pageMeals();
       }
       if (path === `/drinks/${id}`) {
-        const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`);
-        const data = await response.json();
-        console.log(data.drinks);
-        setRecipe(data.drinks);
-
-        // pega ingredientes
-        const filterIngredients = Object.keys(data.drinks[0])
-          .filter((item) => item.startsWith('strIngredient'));
-        const getIngredients = filterIngredients
-          .map((ingredient) => data.drinks[0][ingredient]);
-        setIngredients(getIngredients);
-
-        // pega quantidades
-        const filterMeasure = Object.keys(data.drinks[0])
-          .filter((item) => item.startsWith('strMeasure'));
-        const getMeasure = filterMeasure
-          .map((measureItem) => data.drinks[0][measureItem]);
-        setMeasure(getMeasure);
-        console.log(getMeasure);
-
-        const reponseMeal = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
-        return reponseMeal;
+        pageDrinks();
       }
     };
     requestApi();
@@ -122,6 +134,29 @@ function RecipeDetails() {
               />
             )
           }
+
+            <h2>Recommended</h2>
+            <div className="scroll-container">
+              {cards.map((card, index) => (
+                <div
+                  key={ index }
+                  className="card"
+                  data-testid={ `${index}-recommendation-card` }
+                >
+                  <img
+                    src={ card.strDrinkThumb || card.strMealThumb }
+                    alt={ card.strDrink || card.strMeal }
+                  />
+                  <p
+                    data-testid={ `${index}-recommendation-title` }
+                  >
+                    {card.strDrink || card.strMeal}
+
+                  </p>
+                </div>
+              ))}
+            </div>
+
           </div>
 
         ))
