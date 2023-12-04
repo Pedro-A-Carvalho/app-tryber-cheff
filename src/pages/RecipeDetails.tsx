@@ -24,7 +24,7 @@ function RecipeDetails() {
   const getPathName = newPath.slice(0, indexCaractere);
   const navigate = useNavigate();
   const cards = recommended.slice(0, 6);
-  const [storage, setStorage] = useState([{}]);
+  const pathNameForStorage = newPath.slice(0, indexCaractere - 1);
 
   useEffect(() => {
     const requestApi = async () => {
@@ -67,25 +67,21 @@ function RecipeDetails() {
     }
   };
 
-  console.log(storage);
-
   const handleFavorite = () => {
-    setStorage((prevState) => (
-      [
-        ...prevState,
-        {
-          id,
-          type: getPathName,
-          nationality: '',
-          category: recipe[0].strCategory,
-          alcoholicOrNot: recipe[0].strAlcoholic || '',
-          name: recipe[0].strDrink || recipe[0].strMeal,
-          image: recipe[0].strDrinkThumb,
-        },
-      ]));
+    const getFavorite = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
+
+    const newFavorite = {
+      id,
+      type: pathNameForStorage,
+      nationality: recipe[0].strArea || '',
+      category: recipe[0].strCategory || '',
+      alcoholicOrNot: recipe[0].strAlcoholic || '',
+      name: recipe[0].strDrink || recipe[0].strMeal,
+      image: recipe[0].strDrinkThumb || recipe[0].strMealThumb,
+    };
 
     localStorage
-      .setItem('favoriteRecipes', JSON.stringify(storage));
+      .setItem('favoriteRecipes', JSON.stringify([...getFavorite, newFavorite]));
   };
 
   return (
