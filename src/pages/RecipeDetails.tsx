@@ -4,16 +4,12 @@ import Slider from 'react-slick';
 import './RecipeDetails.css';
 import 'slick-carousel/slick/slick.css';
 import shareIcon from '../images/shareIcon.svg';
-import favoriteIcon from '../images/whiteHeartIcon.svg';
+import favoriteIconWhite from '../images/whiteHeartIcon.svg';
+import favoriteIconBlack from '../images/blackHeartIcon.svg';
 import RecipeDetailsContext from '../context/RecipeDetailsContext';
 
 function RecipeDetails() {
-  const {
-    ingredients,
-    measure,
-    pageDrinks,
-    pageMeals,
-    recipe,
+  const { ingredients, measure, pageDrinks, pageMeals, recipe,
     recommended } = useContext(RecipeDetailsContext);
   const [copyLink, setCopyLink] = useState(false);
   const { id }: any = useParams();
@@ -25,14 +21,35 @@ function RecipeDetails() {
   const navigate = useNavigate();
   const cards = recommended.slice(0, 6);
   const pathNameForStorage = newPath.slice(0, indexCaractere - 1);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
     const requestApi = async () => {
       if (path === `/meals/${id}`) {
         pageMeals(id);
+        const getFavorite = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
+
+        getFavorite
+          .forEach((recipeFavorite: any) => {
+            if (recipeFavorite.id.includes(id)) {
+              setIsFavorite(true);
+            }
+          });
+
+        console.log(isFavorite);
       }
       if (path === `/drinks/${id}`) {
         pageDrinks(id);
+        const getFavorite = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
+
+        getFavorite
+          .forEach((recipeFavorite: any) => {
+            if (recipeFavorite.id.includes(id)) {
+              setIsFavorite(true);
+            }
+          });
+
+        console.log(isFavorite);
       }
     };
     requestApi();
@@ -66,10 +83,10 @@ function RecipeDetails() {
       setCopyLink(false);
     }
   };
+  console.log(recipe);
 
   const handleFavorite = () => {
     const getFavorite = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
-
     const newFavorite = {
       id,
       type: pathNameForStorage,
@@ -80,8 +97,19 @@ function RecipeDetails() {
       image: recipe[0].strDrinkThumb || recipe[0].strMealThumb,
     };
 
-    localStorage
-      .setItem('favoriteRecipes', JSON.stringify([...getFavorite, newFavorite]));
+    if (isFavorite) {
+      const removeStorage = getFavorite
+        .filter((recipeFavorite: any) => (
+          !recipeFavorite.id.includes(id)
+        ));
+      setIsFavorite(false);
+      localStorage
+        .setItem('favoriteRecipes', JSON.stringify(removeStorage));
+    } else {
+      setIsFavorite(true);
+      localStorage
+        .setItem('favoriteRecipes', JSON.stringify([...getFavorite, newFavorite]));
+    }
   };
 
   return (
@@ -190,10 +218,13 @@ function RecipeDetails() {
             </button>
 
             <button
-              data-testid="favorite-btn"
               onClick={ handleFavorite }
             >
-              <img src={ favoriteIcon } alt="Share" />
+              <img
+                data-testid="favorite-btn"
+                src={ !isFavorite ? favoriteIconWhite : favoriteIconBlack }
+                alt="Share"
+              />
             </button>
 
             {
