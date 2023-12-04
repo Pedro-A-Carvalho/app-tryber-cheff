@@ -21,6 +21,19 @@ export type SearchContextType = {
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
+export type RecipeDetailsContextType = {
+  pageMeals: (id: string) => Promise<void>,
+  pageDrinks: (id: string) => Promise<void>
+  ingredients: string[],
+  measure: string[],
+  recipe: RecipeAllTypes[],
+  recommended: RecipeAllTypes[]
+};
+
+export type RecipeProviderType = {
+  children: ReactNode
+};
+
 export type MealType = {
   idMeal: string,
   strMeal: string,
