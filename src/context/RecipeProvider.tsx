@@ -44,10 +44,10 @@ function RecipeProvider({ children }: RecipeProviderProps) {
         setCategories(category);
         setFilteredRecipes(simplifiedDrinks);
       };
-      setLoading(true);
+      // setLoading(true);
       if (path === '/meals') fetchMeals();
       if (path === '/drinks') fetchDrinks();
-      setLoading(false);
+      // setLoading(false);
     },
     [path],
   );
