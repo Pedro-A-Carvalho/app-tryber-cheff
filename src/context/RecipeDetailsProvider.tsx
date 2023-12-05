@@ -7,6 +7,7 @@ function RecipeDetailsProvider({ children }: RecipeProviderType) {
   const [measure, setMeasure] = useState(['']);
   const [recipe, setRecipe] = useState<RecipeAllTypes[]>([]);
   const [recommended, setRecommended] = useState<RecipeAllTypes[]>([]);
+  const [copyLink, setCopyLink] = useState(false);
 
   const filterIngredientsAndMeasure = (data: any) => {
     const filterIngredients = Object.keys(data[0])
@@ -45,6 +46,16 @@ function RecipeDetailsProvider({ children }: RecipeProviderType) {
     setRecommended(dataMeal.meals);
   };
 
+  const handleCopyClick = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setCopyLink(true);
+    } catch (error) {
+      console.error('Erro ao copiar para a área de transferência:', error);
+      setCopyLink(false);
+    }
+  };
+
   const value = {
     ingredients,
     measure,
@@ -52,6 +63,8 @@ function RecipeDetailsProvider({ children }: RecipeProviderType) {
     pageMeals,
     recipe,
     recommended,
+    handleCopyClick,
+    copyLink,
   };
 
   return (

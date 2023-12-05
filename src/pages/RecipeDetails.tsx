@@ -10,8 +10,7 @@ import RecipeDetailsContext from '../context/RecipeDetailsContext';
 
 function RecipeDetails() {
   const { ingredients, measure, pageDrinks, pageMeals, recipe,
-    recommended } = useContext(RecipeDetailsContext);
-  const [copyLink, setCopyLink] = useState(false);
+    recommended, handleCopyClick, copyLink } = useContext(RecipeDetailsContext);
   const { id }: any = useParams();
   const location = useLocation();
   const path = location.pathname;
@@ -73,17 +72,6 @@ function RecipeDetails() {
     },
   }];
   // ---
-
-  const handleCopyClick = async () => {
-    try {
-      await navigator.clipboard.writeText(window.location.href);
-      setCopyLink(true);
-    } catch (error) {
-      console.error('Erro ao copiar para a área de transferência:', error);
-      setCopyLink(false);
-    }
-  };
-  console.log(recipe);
 
   const handleFavorite = () => {
     const getFavorite = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');

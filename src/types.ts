@@ -28,6 +28,9 @@ export type RecipeDetailsContextType = {
   measure: string[],
   recipe: RecipeAllTypes[],
   recommended: RecipeAllTypes[]
+  handleCopyClick: () => Promise<void>,
+  copyLink: boolean,
+
 };
 
 export type RecipeProviderType = {
