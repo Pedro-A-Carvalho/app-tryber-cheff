@@ -15,7 +15,6 @@ const firstElementBeef = 'Beef and Mustard Pie';
 describe('Testa o componente Recipes.', () => {
   test('Verifica se todos os elementos estão na tela de meals.', async () => {
     renderWithProviderTotal(<App />, { route: '/meals' });
-
     const recipeCard = await screen.findByTestId('0-recipe-card');
     expect(recipeCard).toBeInTheDocument();
     const recipeTitle = await screen.findByTestId('0-card-name');
@@ -28,7 +27,6 @@ describe('Testa o componente Recipes.', () => {
 
   test('Verifica se todos os elementos estão na tela de drink.', async () => {
     renderWithProviderTotal(<App />, { route: '/drinks' });
-
     const recipeCard = await screen.findByTestId('0-recipe-card');
     expect(recipeCard).toBeInTheDocument();
     const recipeTitle = await screen.findByTestId('0-card-name');

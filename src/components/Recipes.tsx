@@ -20,7 +20,6 @@ function Recipes() {
     setFilteredCategories([]);
   };
   if (loading) return <div>Loading...</div>;
-  console.log(filteredRecipes);
   return (
     <div>
       <div>
@@ -60,6 +59,7 @@ function Recipes() {
               src={ recipe.image }
               alt={ recipe.name }
               data-testid={ `${index}-card-img` }
+              style={ { width: '100vw', height: 'auto' } }
             />
             <p data-testid={ `${index}-card-name` }>{ recipe.name }</p>
 

@@ -111,7 +111,7 @@ describe('Testa Search Bar', () => {
     expect(window.location.pathname).toBe('/meals/52977');
   });
 
-  test('test.', async () => {
+  test('Verifica se ao digitar mais de uma letra no input é renderizado um alert.', async () => {
     const search = 'ab';
 
     global.alert = vi.fn();

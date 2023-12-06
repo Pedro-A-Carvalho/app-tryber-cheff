@@ -24,10 +24,10 @@ function Footer() {
           >
             <img
               src="src/images/drinkIcon.svg"
+              data-testid="drinks-bottom-btn"
               width="30"
               height="30"
               alt="Ícone de bebidas"
-              data-testid="drinks-bottom-btn"
             />
           </Navbar.Brand>
           <Navbar.Brand
@@ -35,10 +35,10 @@ function Footer() {
           >
             <img
               src="src/images/mealIcon.svg"
+              data-testid="meals-bottom-btn"
               width="30"
               height="30"
               alt="Ícone de comidas"
-              data-testid="meals-bottom-btn"
             />
           </Navbar.Brand>
         </Nav>
