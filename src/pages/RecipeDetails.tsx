@@ -211,7 +211,7 @@ function RecipeDetails() {
               <img
                 data-testid="favorite-btn"
                 src={ !isFavorite ? favoriteIconWhite : favoriteIconBlack }
-                alt="Share"
+                alt={ !isFavorite ? 'FavoriteWhite' : 'FavoriteBlack' }
               />
             </button>
 
