@@ -47,8 +47,11 @@ function RecipeDetailsProvider({ children }: RecipeProviderType) {
   };
 
   const handleCopyClick = async () => {
+    const path = (window.location.href).split('/');
+    console.log(path);
+    const newPath = `${path[0]}//${path[2]}/${path[3]}/${path[4]}`;
     try {
-      await navigator.clipboard.writeText(window.location.href);
+      await navigator.clipboard.writeText(newPath);
       setCopyLink(true);
     } catch (error) {
       console.error('Erro ao copiar para a área de transferência:', error);

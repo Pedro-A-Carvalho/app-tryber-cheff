@@ -193,16 +193,16 @@ function RecipeDetails() {
                       { position: 'fixed', bottom: '0', left: '0', width: '100vw' }
 }
                   onClick={ () => {
-                    const newRecipeInProgress = {
-                      id,
-                      ingredientsDone: [], // array de booleanos
-                    };
-                    const newStorage = JSON.parse(JSON.stringify(recipesInProgress));
-                    // if (!newStorage[`${type}`]) {
-                    //   newStorage[`${type}`] = [];
-                    // }
-                    newStorage.push(newRecipeInProgress);
-                    localStorage.setItem('inProgressRecipes', JSON.stringify(newStorage));
+                    // const newRecipeInProgress = {
+                    //   id,
+                    //   ingredientsDone: [], // array de booleanos
+                    // };
+                    // const newStorage = JSON.parse(JSON.stringify(recipesInProgress));
+                    // // if (!newStorage[`${type}`]) {
+                    // //   newStorage[`${type}`] = [];
+                    // // }
+                    // newStorage.push(newRecipeInProgress);
+                    // localStorage.setItem('inProgressRecipes', JSON.stringify(newStorage));
 
                     navigate(`${path}/in-progress`);
                   } }

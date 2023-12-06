@@ -30,7 +30,6 @@ function RecipeInProgress() {
   } else {
     botaoFinalizar = false;
   }
-
   if (thisRecipe === undefined) {
     const newRecipeInProgress = {
       id,
@@ -70,14 +69,23 @@ function RecipeInProgress() {
     setIngredientsDone(JSON.parse(localStorage.getItem(id) || '[]'));
   }, []);
   useEffect(() => {
-    if (thisRecipe.ingredientsDone.length === 0) {
+    if (thisRecipe && thisRecipe.ingredientsDone.length > 0) {
+      // const newRecipeInProgress = {
+      //   id,
+      //   ingredientsDone: newIngredientsDone, // array de booleanos
+      // };
+      // const newStorage = JSON.parse(JSON.stringify(recipesInProgress));
+      // newStorage.push(newRecipeInProgress);
+      // localStorage.setItem('inProgressRecipes', JSON.stringify(newStorage));
+      const newIngredientsDone = thisRecipe.ingredientsDone;
+      console.log('aqui2');
+      setIngredientsDone(newIngredientsDone);
+    } else {
       const newIngredientsDone = ingredients
         .filter((ingredient) => ingredient !== null && ingredient.length > 0)
         .map(() => false);
       setIngredientsDone(newIngredientsDone);
-    } else {
-      const newIngredientsDone = thisRecipe.ingredientsDone;
-      setIngredientsDone(newIngredientsDone);
+      console.log('aqui');
     }
   }, [ingredients]);
   const handleFavorite = () => {
@@ -109,18 +117,18 @@ function RecipeInProgress() {
     const getDoneRecipes = JSON.parse(localStorage.getItem('doneRecipes') || '[]');
     const newDoneRecipe = {
       id,
-      type: pathNameForStorage,
-      area: recipe[0].strArea || '',
-      category: recipe[0].strCategory || '',
-      alcoholicOrNot: recipe[0].strAlcoholic || '',
+      nationality: recipe[0].strArea || '',
       name: recipe[0].strDrink || recipe[0].strMeal,
+      category: recipe[0].strCategory || '',
       image: recipe[0].strDrinkThumb || recipe[0].strMealThumb,
-      doneDate: new Date().toLocaleDateString(),
-      tags: recipe[0].strTags || [],
+      tags: recipe[0].strTags?.split(',') || [],
+      alcoholicOrNot: recipe[0].strAlcoholic || '',
+      type: pathNameForStorage,
+      doneDate: new Date().toISOString(),
     };
     const removeStorage = recipesInProgress
       .filter((recipeInProgress: any) => (
-        !recipeInProgress.includes(id)
+        !recipeInProgress.id === id
       ));
     localStorage
       .setItem('inProgressRecipes', JSON.stringify([...removeStorage]));
@@ -128,6 +136,7 @@ function RecipeInProgress() {
       .setItem('doneRecipes', JSON.stringify([...getDoneRecipes, newDoneRecipe]));
     navigate('/done-recipes');
   };
+  console.log(recipe);
   return (
     <div>
       {
