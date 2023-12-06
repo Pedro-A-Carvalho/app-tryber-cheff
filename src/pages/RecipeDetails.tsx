@@ -21,6 +21,8 @@ function RecipeDetails() {
   const cards = recommended.slice(0, 6);
   const pathNameForStorage = newPath.slice(0, indexCaractere - 1);
   const [isFavorite, setIsFavorite] = useState(false);
+  const type = path.split('/')[1];
+  const recipesInProgress = JSON.parse(localStorage.getItem('inProgressRecipes') || '[]');
 
   useEffect(() => {
     const requestApi = async () => {
@@ -71,7 +73,6 @@ function RecipeDetails() {
       52771: [],
     },
   }];
-  // ---
 
   const handleFavorite = () => {
     const getFavorite = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
@@ -99,7 +100,6 @@ function RecipeDetails() {
         .setItem('favoriteRecipes', JSON.stringify([...getFavorite, newFavorite]));
     }
   };
-
   return (
     <>
       {
@@ -111,14 +111,12 @@ function RecipeDetails() {
               data-testid="recipe-photo"
               style={ { width: '100vw', height: 'auto' } }
             />
-
             <h1 data-testid="recipe-title">{item.strMeal || item.strDrink}</h1>
             {
           path === `/meals/${id}`
             ? <p data-testid="recipe-category">{item.strCategory}</p>
             : <p data-testid="recipe-category">{item.strAlcoholic}</p>
         }
-
             <div>
               <h2>Ingredients</h2>
               {
@@ -137,7 +135,6 @@ function RecipeDetails() {
                 ))
           }
             </div>
-
             <div>
               <h2>Instructions</h2>
               <p data-testid="instructions">{item.strInstructions}</p>
@@ -155,7 +152,6 @@ function RecipeDetails() {
               />
             )
           }
-
             <h2>Recommended</h2>
             <Slider { ...settings }>
               {cards.map((card, index) => (
@@ -177,12 +173,15 @@ function RecipeDetails() {
                 </div>
               ))}
             </Slider>
-
-            {Object.keys(inProgressRecipesTeste[0][getPathName]).includes(id)
+            {recipesInProgress?.some((recipeInProgress: any) => (
+              recipeInProgress.id === id
+            ))
               ? (
                 <button
                   data-testid="start-recipe-btn"
-                  style={ { position: 'fixed', bottom: '0', left: '0', width: '100vw' } }
+                  style={
+                      { position: 'fixed', bottom: '0', left: '0', width: '100vw' }
+}
                   onClick={ () => navigate(`${path}/in-progress`) }
                 >
                   Continue Recipe
@@ -190,13 +189,27 @@ function RecipeDetails() {
               ) : (
                 <button
                   data-testid="start-recipe-btn"
-                  style={ { position: 'fixed', bottom: '0', left: '0', width: '100vw' } }
-                  onClick={ () => navigate(`${path}/in-progress`) }
+                  style={
+                      { position: 'fixed', bottom: '0', left: '0', width: '100vw' }
+}
+                  onClick={ () => {
+                    const newRecipeInProgress = {
+                      id,
+                      ingredientsDone: [], // array de booleanos
+                    };
+                    const newStorage = JSON.parse(JSON.stringify(recipesInProgress));
+                    // if (!newStorage[`${type}`]) {
+                    //   newStorage[`${type}`] = [];
+                    // }
+                    newStorage.push(newRecipeInProgress);
+                    localStorage.setItem('inProgressRecipes', JSON.stringify(newStorage));
+
+                    navigate(`${path}/in-progress`);
+                  } }
                 >
                   Start Recipe
                 </button>
               )}
-
             <button
               data-testid="share-btn"
               style={ { marginBottom: '10vh' } }
@@ -204,7 +217,6 @@ function RecipeDetails() {
             >
               <img src={ shareIcon } alt="Share" />
             </button>
-
             <button
               onClick={ handleFavorite }
             >
@@ -214,7 +226,6 @@ function RecipeDetails() {
                 alt="Share"
               />
             </button>
-
             {
             copyLink && <span>Link copied!</span>
           }

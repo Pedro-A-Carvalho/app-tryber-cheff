@@ -7,9 +7,9 @@ function TotalProvider({ children }:ChildrenType) {
   return (
     <RecipeProvider>
       <RecipeDetailsProvider>
-      <SearchProvider>
-        {children}
-      </SearchProvider>
+        <SearchProvider>
+          {children}
+        </SearchProvider>
       </RecipeDetailsProvider>
     </RecipeProvider>
   );
