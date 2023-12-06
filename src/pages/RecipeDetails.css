@@ -1,8 +1,7 @@
-/* estilização temporária dos cards Recommended, caso nececesário, pode modificar ou refazer conforme a necessidade */
-  .card {
-    margin: 8px;
-    background-color: white;
-    color: black;
-    border-radius: 8px;
-    box-sizing: border-box;
-  }
+.card {
+  background-color: white;
+  border-radius: 8px;
+  box-sizing: border-box;
+  color: black;
+  margin: 8px;
+}
