@@ -28,7 +28,6 @@ function Footer() {
               width="30"
               height="30"
               alt="Ícone de bebidas"
-              data-testid="drinks-bottom-btn"
             />
           </Navbar.Brand>
           <Navbar.Brand
@@ -40,7 +39,6 @@ function Footer() {
               width="30"
               height="30"
               alt="Ícone de comidas"
-              data-testid="meals-bottom-btn"
             />
           </Navbar.Brand>
         </Nav>

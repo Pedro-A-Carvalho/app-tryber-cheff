@@ -1,8 +1,6 @@
 /* estilização temporária dos cards Recommended, caso nececesário, pode modificar ou refazer conforme a necessidade */
   .card {
-    flex: 0 0 160px;
     margin: 8px;
-    padding: 16px;
     background-color: white;
     color: black;
     border-radius: 8px;

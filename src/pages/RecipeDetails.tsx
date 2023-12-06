@@ -79,7 +79,7 @@ function RecipeDetails() {
       id,
       type: pathNameForStorage,
       nationality: recipe[0].strArea || '',
-      category: recipe[0].strCategory || '',
+      category: recipe[0].strCategory,
       alcoholicOrNot: recipe[0].strAlcoholic || '',
       name: recipe[0].strDrink || recipe[0].strMeal,
       image: recipe[0].strDrinkThumb || recipe[0].strMealThumb,
@@ -152,6 +152,7 @@ function RecipeDetails() {
                 src={ item.strYoutube }
                 title="Video"
                 data-testid="video"
+                style={ { width: '100vw', height: 'auto' } }
               />
             )
           }
