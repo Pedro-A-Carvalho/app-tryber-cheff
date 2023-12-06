@@ -22,7 +22,8 @@ function RecipeDetails() {
   const pathNameForStorage = newPath.slice(0, indexCaractere - 1);
   const [isFavorite, setIsFavorite] = useState(false);
   const type = path.split('/')[1];
-  const recipesInProgress = JSON.parse(localStorage.getItem('inProgressRecipes') || '[]');
+  const recipesInProgress = JSON.parse(localStorage.getItem('inProgressRecipes')
+  || JSON.stringify({ meals: {}, drinks: {} }));
 
   useEffect(() => {
     const requestApi = async () => {
@@ -173,9 +174,7 @@ function RecipeDetails() {
                 </div>
               ))}
             </Slider>
-            {recipesInProgress?.some((recipeInProgress: any) => (
-              recipeInProgress.id === id
-            ))
+            {(id in recipesInProgress[`${type}`])
               ? (
                 <button
                   data-testid="start-recipe-btn"
@@ -193,17 +192,6 @@ function RecipeDetails() {
                       { position: 'fixed', bottom: '0', left: '0', width: '100vw' }
 }
                   onClick={ () => {
-                    // const newRecipeInProgress = {
-                    //   id,
-                    //   ingredientsDone: [], // array de booleanos
-                    // };
-                    // const newStorage = JSON.parse(JSON.stringify(recipesInProgress));
-                    // // if (!newStorage[`${type}`]) {
-                    // //   newStorage[`${type}`] = [];
-                    // // }
-                    // newStorage.push(newRecipeInProgress);
-                    // localStorage.setItem('inProgressRecipes', JSON.stringify(newStorage));
-
                     navigate(`${path}/in-progress`);
                   } }
                 >

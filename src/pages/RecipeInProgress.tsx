@@ -16,30 +16,30 @@ function RecipeInProgress() {
   const { ingredients, measure, pageDrinks, pageMeals, recipe,
     recommended, handleCopyClick, copyLink } = useContext(RecipeDetailsContext);
   const [isFavorite, setIsFavorite] = useState(false);
-  const recipesInProgress = JSON.parse(localStorage.getItem('inProgressRecipes') || '[]');
-  const thisRecipe = recipesInProgress.find((element : any) => element.id === id);
+  const recipesInProgress = JSON
+    .parse(localStorage.getItem('inProgressRecipes')
+    || JSON.stringify({ meals: {}, drinks: {} }));
+  const thisRecipe = recipesInProgress[`${type}`][`${id}`] || [];
   const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes') || '[]');
-  const [ingredientsDone, setIngredientsDone] = useState<boolean[]>([]);
-  let botaoFinalizar = true;
-  if (ingredientsDone.length > 0) {
-    ingredientsDone.forEach((element) => {
-      if (!element) {
-        botaoFinalizar = false;
-      }
-    });
-  } else {
-    botaoFinalizar = false;
-  }
+  const [ingredientsDone, setIngredientsDone] = useState<string[]>([]);
+
+  const teste = () => {
+    const filteredIngredients = ingredients
+      .filter((ingredient) => ingredient !== null && ingredient.length > 0);
+    return (filteredIngredients.length === ingredientsDone.length);
+  };
   if (thisRecipe === undefined) {
     const newRecipeInProgress = {
-      id,
       ingredientsDone: [], // array de booleanos
     };
     const newStorage = JSON.parse(JSON.stringify(recipesInProgress));
-    newStorage.push(newRecipeInProgress);
+    console.log(type);
+    if (!newStorage[`${type}`]) {
+      newStorage[`${type}`] = {};
+    }
+    newStorage[`${type}`][`${id}`] = newRecipeInProgress;
     localStorage.setItem('inProgressRecipes', JSON.stringify(newStorage));
   }
-
   useEffect(() => {
     const requestApi = async () => {
       if (path === `/meals/${id}/in-progress`) {
@@ -69,23 +69,15 @@ function RecipeInProgress() {
     setIngredientsDone(JSON.parse(localStorage.getItem(id) || '[]'));
   }, []);
   useEffect(() => {
-    if (thisRecipe && thisRecipe.ingredientsDone.length > 0) {
-      // const newRecipeInProgress = {
-      //   id,
-      //   ingredientsDone: newIngredientsDone, // array de booleanos
-      // };
-      // const newStorage = JSON.parse(JSON.stringify(recipesInProgress));
-      // newStorage.push(newRecipeInProgress);
-      // localStorage.setItem('inProgressRecipes', JSON.stringify(newStorage));
-      const newIngredientsDone = thisRecipe.ingredientsDone;
+    if (thisRecipe && thisRecipe.length > 0) {
+      const newIngredientsDone = thisRecipe;
       console.log('aqui2');
       setIngredientsDone(newIngredientsDone);
     } else {
       const newIngredientsDone = ingredients
-        .filter((ingredient) => ingredient !== null && ingredient.length > 0)
-        .map(() => false);
-      setIngredientsDone(newIngredientsDone);
-      console.log('aqui');
+        .filter((ingredient) => ingredient !== null && ingredient.length > 0);
+      // setIngredientsDone(newIngredientsDone);
+      console.log(newIngredientsDone);
     }
   }, [ingredients]);
   const handleFavorite = () => {
@@ -126,12 +118,10 @@ function RecipeInProgress() {
       type: pathNameForStorage,
       doneDate: new Date().toISOString(),
     };
-    const removeStorage = recipesInProgress
-      .filter((recipeInProgress: any) => (
-        !recipeInProgress.id === id
-      ));
+    const removeStorage = recipesInProgress[`${type}`];
+    delete removeStorage[`${id}`];
     localStorage
-      .setItem('inProgressRecipes', JSON.stringify([...removeStorage]));
+      .setItem('inProgressRecipes', JSON.stringify(removeStorage));
     localStorage
       .setItem('doneRecipes', JSON.stringify([...getDoneRecipes, newDoneRecipe]));
     navigate('/done-recipes');
@@ -165,7 +155,7 @@ function RecipeInProgress() {
                         key={ index }
                         data-testid={ `${index}-ingredient-step` }
                         style={
-                            { textDecoration: ingredientsDone[index]
+                            { textDecoration: ingredientsDone.includes(ingredient)
                               ? 'line-through solid rgb(0, 0, 0)' : 'none' }
 }
                       >
@@ -175,22 +165,26 @@ function RecipeInProgress() {
                           name={ ingredient }
                           value={ ingredients }
                           onChange={ () => {
-                            const newIngredientsDone = [...ingredientsDone];
-                            newIngredientsDone[index] = !ingredientsDone[index];
+                            let newIngredientsDone = [...ingredientsDone];
+                            if (!newIngredientsDone.includes(ingredient)) {
+                              newIngredientsDone = [...ingredientsDone, ingredient];
+                            } else {
+                              newIngredientsDone = newIngredientsDone
+                                .filter((element) => element !== ingredient);
+                            }
                             setIngredientsDone(newIngredientsDone);
-                            const newStorage = recipesInProgress.map(
-                              (recipeInProgress: any) => {
-                                if (recipeInProgress.id === id) {
-                                  recipeInProgress
-                                    .ingredientsDone = newIngredientsDone;
-                                }
-                                return recipeInProgress;
-                              },
-                            );
+                            let newStorage = recipesInProgress[`${type}`][`${id}`];
+                            newStorage = newIngredientsDone;
                             localStorage
-                              .setItem('inProgressRecipes', JSON.stringify(newStorage));
+                              .setItem('inProgressRecipes', JSON
+                                .stringify(
+                                  { ...recipesInProgress,
+                                    [`${type}`]:
+                                    { ...recipesInProgress[`${type}`],
+                                      [`${id}`]: newStorage } },
+                                ));
                           } }
-                          checked={ ingredientsDone[index] }
+                          checked={ ingredientsDone.includes(ingredient) }
                         />
                       </li>
                     ) : null
@@ -218,7 +212,7 @@ function RecipeInProgress() {
               data-testid="finish-recipe-btn"
               style={ { position: 'fixed', bottom: '0', left: '0', width: '100vw' } }
               onClick={ handleRecipeDone }
-              disabled={ !botaoFinalizar }
+              disabled={ !teste() }
             >
               Finish Recipe
             </button>
