@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import Slider from 'react-slick';
+// import Slider from 'react-slick';
 import './RecipeDetails.css';
-import 'slick-carousel/slick/slick.css';
+// import 'slick-carousel/slick/slick.css';
 import shareIcon from '../images/shareIcon.svg';
 import favoriteIconWhite from '../images/whiteHeartIcon.svg';
 import favoriteIconBlack from '../images/blackHeartIcon.svg';
