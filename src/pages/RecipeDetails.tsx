@@ -24,6 +24,7 @@ function RecipeDetails() {
   const type = path.split('/')[1];
   const recipesInProgress = JSON.parse(localStorage.getItem('inProgressRecipes')
   || JSON.stringify({ meals: {}, drinks: {} }));
+  const recipeType = recipesInProgress[`${type}`];
 
   useEffect(() => {
     const requestApi = async () => {
@@ -155,7 +156,7 @@ function RecipeDetails() {
             )
           }
             <h2>Recommended</h2>
-            {(id in recipesInProgress[`${type}`])
+            {(Object.prototype.hasOwnProperty.call(recipesInProgress[`${type}`], id))
               ? (
                 <button
                   data-testid="start-recipe-btn"
