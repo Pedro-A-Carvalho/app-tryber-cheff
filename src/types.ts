@@ -125,3 +125,15 @@ export type RecipeAllTypes = {
   strInstructionsIT: string;
   strVideo: string;
 };
+
+export type DoneRecipeType = {
+  id: string,
+  nationality: string,
+  name: string,
+  category: string,
+  image: string,
+  tags: string[],
+  alcoholicOrNot: string,
+  type: string,
+  doneDate: string,
+};
