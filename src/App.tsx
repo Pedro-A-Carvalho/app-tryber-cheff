@@ -8,6 +8,7 @@ import DoneRecipes from './pages/DoneRecipes';
 import FavoriteRecipes from './pages/FavoriteRecipes';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import RecipeDetails from './pages/RecipeDetails';
+import RecipeInProgress from './pages/RecipeInProgress';
 
 function App() {
   return (
@@ -19,8 +20,8 @@ function App() {
       <Route path="/meals/:id" element={ <RecipeDetails /> } />
       <Route path="/drinks/:id" element={ <RecipeDetails /> } />
 
-      <Route path="/meals/:id-da-receita/in-progress" element={ <Meals /> } />
-      <Route path="/drinks/:id-da-receita/in-progress" element={ <Drinks /> } />
+      <Route path="/meals/:id/in-progress" element={ <RecipeInProgress /> } />
+      <Route path="/drinks/:id/in-progress" element={ <RecipeInProgress /> } />
 
       <Route path="/profile" element={ <Profile /> } />
       <Route path="/done-recipes" element={ <DoneRecipes /> } />
