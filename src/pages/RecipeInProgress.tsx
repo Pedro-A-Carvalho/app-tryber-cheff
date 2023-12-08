@@ -28,15 +28,11 @@ function RecipeInProgress() {
       .filter((ingredient) => ingredient !== null && ingredient.length > 0);
     return (filteredIngredients.length === ingredientsDone.length);
   };
-  if (thisRecipe === undefined) {
+  if (thisRecipe.length === 0) {
     const newRecipeInProgress = {
       ingredientsDone: [], // array de booleanos
     };
     const newStorage = JSON.parse(JSON.stringify(recipesInProgress));
-    console.log(type);
-    if (!newStorage[`${type}`]) {
-      newStorage[`${type}`] = {};
-    }
     newStorage[`${type}`][`${id}`] = newRecipeInProgress;
     localStorage.setItem('inProgressRecipes', JSON.stringify(newStorage));
   }
@@ -121,7 +117,8 @@ function RecipeInProgress() {
     const removeStorage = recipesInProgress[`${type}`];
     delete removeStorage[`${id}`];
     localStorage
-      .setItem('inProgressRecipes', JSON.stringify(removeStorage));
+      .setItem('inProgressRecipes', JSON
+        .stringify({ ...recipesInProgress, [`${type}`]: removeStorage }));
     localStorage
       .setItem('doneRecipes', JSON.stringify([...getDoneRecipes, newDoneRecipe]));
     navigate('/done-recipes');
@@ -140,7 +137,7 @@ function RecipeInProgress() {
             />
             <h1 data-testid="recipe-title">{item.strMeal || item.strDrink}</h1>
             {
-          path === `/meals/${id}`
+          path === `/meals/${id}/in-progress`
             ? <p data-testid="recipe-category">{item.strCategory}</p>
             : <p data-testid="recipe-category">{item.strAlcoholic}</p>
         }
@@ -229,7 +226,7 @@ function RecipeInProgress() {
               <img
                 data-testid="favorite-btn"
                 src={ !isFavorite ? favoriteIconWhite : favoriteIconBlack }
-                alt="Share"
+                alt={ !isFavorite ? 'FavoriteWhite' : 'FavoriteBlack' }
               />
             </button>
             {
