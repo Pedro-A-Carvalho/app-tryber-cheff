@@ -156,7 +156,7 @@ function RecipeDetails() {
             )
           }
             <h2>Recommended</h2>
-            {(Object.prototype.hasOwnProperty.call(recipesInProgress[`${type}`], id))
+            {(id in recipesInProgress[`${type}`])
               ? (
                 <button
                   data-testid="start-recipe-btn"
