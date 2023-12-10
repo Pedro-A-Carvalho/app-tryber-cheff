@@ -3,21 +3,30 @@ import App from '../App';
 import renderWithProviderTotal from '../utils/renderWithProviderTotal';
 
 const favRoute = { route: '/favorite-recipes' };
+const favoriteBtn = '0-horizontal-favorite-btn';
 const filterDrinkButton = 'filter-by-drink-btn';
+const favoriteRecipes = [
+  {
+    alcoholicOrNot: '',
+    category: 'Chicken',
+    id: '52772',
+    image: 'https://www.themealdb.com/images/media/meals/wvpsxx1468256321.jpg',
+    name: 'Teriyaki Chicken Casserole',
+    nationality: 'Japanese',
+    type: 'meal',
+  },
+  {
+    alcoholicOrNot: 'Alcoholic',
+    category: 'Ordinary Drink',
+    id: '11007',
+    image: 'https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg',
+    name: 'Margarita',
+    nationality: '',
+    type: 'drink',
+  },
+];
 
 test('Verifica se a página é renderizada corretamente', () => {
-  const favoriteRecipes = [
-    {
-      alcoholicOrNot: '',
-      category: 'Chicken',
-      id: '52772',
-      image: 'https://www.themealdb.com/images/media/meals/wvpsxx1468256321.jpg',
-      name: 'Teriyaki Chicken Casserole',
-      nationality: 'Japanese',
-      type: 'meal',
-    },
-  ];
-
   localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipes));
 
   renderWithProviderTotal(<App />, favRoute);
@@ -31,7 +40,7 @@ test('Verifica se a página é renderizada corretamente', () => {
   const recipeName = screen.getByTestId('0-horizontal-name');
   expect(recipeName).toBeInTheDocument();
 
-  const favBtn = screen.getByTestId('0-horizontal-favorite-btn');
+  const favBtn = screen.getByTestId(favoriteBtn);
   expect(favBtn).toBeInTheDocument();
 
   const shareBtn = screen.getByTestId('0-horizontal-share-btn');
@@ -48,27 +57,6 @@ test('Verifica se a página é renderizada corretamente', () => {
 });
 
 test('Verifica se o filtro Meals funciona', async () => {
-  const favoriteRecipes = [
-    {
-      alcoholicOrNot: '',
-      category: 'Chicken',
-      id: '52772',
-      image: 'https://www.themealdb.com/images/media/meals/wvpsxx1468256321.jpg',
-      name: 'Teriyaki Chicken Casserole',
-      nationality: 'Japanese',
-      type: 'meal',
-    },
-    {
-      alcoholicOrNot: 'Alcoholic',
-      category: 'Ordinary Drink',
-      id: '11007',
-      image: 'https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg',
-      name: 'Margarita',
-      nationality: '',
-      type: 'drink',
-    },
-  ];
-
   localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipes));
 
   const { user } = renderWithProviderTotal(<App />, favRoute);
@@ -83,30 +71,6 @@ test('Verifica se o filtro Meals funciona', async () => {
 });
 
 test('Verifica se o filtro Drinks funciona', async () => {
-  const spicyArrabiata = {
-    alcoholicOrNot: '',
-    category: 'Vegetarian',
-    id: '52771',
-    image: 'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg',
-    name: 'Spicy Arrabiata Penne',
-    nationality: 'Italian',
-    type: 'meal',
-  };
-  const margarita = {
-    alcoholicOrNot: 'Alcoholic',
-    category: 'Ordinary Drink',
-    id: '11007',
-    image: 'https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg',
-    name: 'Margarita',
-    nationality: '',
-    type: 'drink',
-  };
-
-  const favoriteRecipes = [
-    spicyArrabiata,
-    margarita,
-  ];
-
   localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipes));
 
   const { user } = renderWithProviderTotal(<App />, favRoute);
@@ -121,7 +85,7 @@ test('Verifica se o filtro Drinks funciona', async () => {
 });
 
 test('Verifica se o botão de desfavoritar funciona', async () => {
-  const favoriteRecipes = [
+  const favoriteLasagna = [
     {
       alcoholicOrNot: '',
       category: 'Pasta',
@@ -133,11 +97,11 @@ test('Verifica se o botão de desfavoritar funciona', async () => {
     },
   ];
 
-  localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipes));
+  localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteLasagna));
 
   const { user } = renderWithProviderTotal(<App />, favRoute);
 
-  const favBtn = screen.getByTestId('0-horizontal-favorite-btn');
+  const favBtn = screen.getByTestId(favoriteBtn);
   await user.click(favBtn);
 
   const meal = screen.queryByText('Lasagna Sandwiches');
@@ -159,4 +123,13 @@ test('Verifica se ao favoritar uma receita, ela aparece na página e é armazena
   const localStorageAfter = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
 
   expect(localStorageBefore.length + 1).toBe(localStorageAfter.length);
+});
+
+test('Verifica se o estado inicial de isFavorite é configurado corretamente', async () => {
+  localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipes));
+
+  renderWithProviderTotal(<App />, favRoute);
+
+  const isFavorite = screen.getByTestId(favoriteBtn);
+  expect(isFavorite).toHaveAttribute('alt', 'FavoriteBlack');
 });

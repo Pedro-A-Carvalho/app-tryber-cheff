@@ -81,6 +81,7 @@ function FavoriteRecipes() {
       {mealOrDrink(recipe, index)}
 
       <ShareButton index={ index } type={ recipe.type } id={ recipe.id } />
+
       <Button onClick={ () => handleFavorite(index) }>
         <img
           data-testid={ `${index}-horizontal-favorite-btn` }
