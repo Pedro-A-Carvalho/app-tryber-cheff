@@ -1,7 +1,10 @@
 import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 import Header from '../components/Header';
 import ShareButton from '../components/ShareButton';
+
+import favoriteIconBlack from '../images/blackHeartIcon.svg';
 
 type FavRecipeType = {
   id: string,
@@ -18,6 +21,7 @@ function FavoriteRecipes() {
   const getFavorite = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
 
   const [favRecipes, setFavRecipes] = useState<FavRecipeType[]>(getFavorite);
+  const [isFavorite, setIsFavorite] = useState<boolean[]>(favRecipes.map(() => false));
 
   const mealOrDrink = (recipe: FavRecipeType, index: any) => {
     if (recipe.type === 'meal') {
@@ -35,28 +39,55 @@ function FavoriteRecipes() {
     }
   };
 
-  const location = useLocation();
-  const path = location.pathname;
+  const handleFavorite = (index: number) => {
+    const updatedFavorites = [...favRecipes];
+    updatedFavorites.splice(index, 1);
+    localStorage.setItem('favoriteRecipes', JSON.stringify(updatedFavorites));
+
+    const newIsFavorite = [...isFavorite];
+    newIsFavorite.splice(index, 1);
+    setIsFavorite(newIsFavorite);
+    setFavRecipes(updatedFavorites);
+  };
 
   const results = favRecipes.map((recipe, index) => (
     <section key={ recipe.id }>
-      <a href={ `${path[0]}//${path[2]}/${recipe.type}s/${recipe.id}` }>
-        <img
-          src={ recipe.image }
-          alt={ recipe.name }
-          data-testid={ `${index}-horizontal-image` }
-        />
-      </a>
+      <Link
+        key={ index }
+        to={ `/${recipe.type}s/${recipe.id}` }
+        data-testid={ `${index}-recipe-card` }
+      >
+        <div>
+          <img
+            src={ recipe.image }
+            alt={ recipe.name }
+            data-testid={ `${index}-horizontal-image` }
+            style={ { width: '100vw', height: 'auto' } }
+          />
+          <p data-testid={ `${index}-card-name` }>{ recipe.name }</p>
 
-      <a href={ `${path[0]}//${path[2]}/${recipe.type}s/${recipe.id}` }>
+        </div>
+      </Link>
+
+      <Link
+        key={ index }
+        to={ `/${recipe.type}s/${recipe.id}` }
+      >
         <h1 data-testid={ `${index}-horizontal-name` }>
           { recipe.name }
         </h1>
-      </a>
+      </Link>
 
       {mealOrDrink(recipe, index)}
 
       <ShareButton index={ index } type={ recipe.type } id={ recipe.id } />
+      <Button onClick={ () => handleFavorite(index) }>
+        <img
+          data-testid={ `${index}-horizontal-favorite-btn` }
+          src={ favoriteIconBlack }
+          alt="FavoriteBlack"
+        />
+      </Button>
 
       {recipe.tags && recipe.tags.map((tag, indexx) => (
         <a
@@ -86,7 +117,7 @@ function FavoriteRecipes() {
 
       <button
         data-testid="filter-by-all-btn"
-
+        onClick={ () => setFavRecipes(getFavorite) }
       >
         All
       </button>
