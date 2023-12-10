@@ -78,9 +78,27 @@ test('Verifica se o filtro Drinks funciona', async () => {
   const filterDrinkBtn = screen.getByTestId(filterDrinkButton);
   await user.click(filterDrinkBtn);
 
-  const drink = screen.queryByText('Spicy Arrabiata Penne');
+  const meal = screen.queryByText('Spicy Arrabiata Penne');
   await waitFor(() => {
-    expect(drink).not.toBeInTheDocument();
+    expect(meal).not.toBeInTheDocument();
+  });
+});
+
+test('Verifica se o filtro All funciona', async () => {
+  localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipes));
+
+  const { user } = renderWithProviderTotal(<App />, favRoute);
+
+  const filterDrinkBtn = screen.getByTestId(filterDrinkButton);
+  const filterAllBtn = screen.getByTestId('filter-by-all-btn');
+  const meal = screen.getAllByText('Teriyaki Chicken Casserole');
+
+  await user.click(filterDrinkBtn);
+
+  await user.click(filterAllBtn);
+
+  await waitFor(() => {
+    expect(meal.length).toBeGreaterThan(0);
   });
 });
 
@@ -132,4 +150,20 @@ test('Verifica se o estado inicial de isFavorite é configurado corretamente', a
 
   const isFavorite = screen.getByTestId(favoriteBtn);
   expect(isFavorite).toHaveAttribute('alt', 'FavoriteBlack');
+});
+
+test('Verifica se não houver receitas favoritadas, não aparecerá nada na página e o localStorage estará vazio', async () => {
+  localStorage.clear();
+
+  renderWithProviderTotal(<App />, favRoute);
+
+  const getFavorite = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
+
+  expect(Array.isArray(getFavorite)).toBe(true);
+  expect(getFavorite.length).toBe(0);
+
+  const favorite = screen.queryByTestId('0-recipe-card');
+  await waitFor(() => {
+    expect(favorite).not.toBeInTheDocument();
+  });
 });
