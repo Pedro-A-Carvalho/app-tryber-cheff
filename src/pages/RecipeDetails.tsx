@@ -155,6 +155,27 @@ function RecipeDetails() {
             )
           }
             <h2>Recommended</h2>
+            <div>
+              {cards.map((card, index) => (
+                <div
+                  key={ index }
+                  className="card"
+                  data-testid={ `${index}-recommendation-card` }
+                >
+                  <img
+                    src={ card.strDrinkThumb || card.strMealThumb }
+                    alt={ card.strDrink || card.strMeal }
+                    style={ { width: 'auto', height: '10em' } }
+                  />
+                  <p
+                    data-testid={ `${index}-recommendation-title` }
+                  >
+                    {card.strDrink || card.strMeal}
+                  </p>
+                </div>
+              ))}
+            </div>
+
             {(Object.keys(recipesInProgress[`${type}`]).includes(id))
               ? (
                 <button

@@ -5,13 +5,13 @@ import { ChildrenType } from '../types';
 
 function TotalProvider({ children }:ChildrenType) {
   return (
-    <RecipeProvider>
-      <RecipeDetailsProvider>
-        <SearchProvider>
-          {children}
-        </SearchProvider>
-      </RecipeDetailsProvider>
-    </RecipeProvider>
+  // <RecipeProvider>
+    <RecipeDetailsProvider>
+      <SearchProvider>
+        {children}
+      </SearchProvider>
+    </RecipeDetailsProvider>
+  // </RecipeProvider>
   );
 }
 
