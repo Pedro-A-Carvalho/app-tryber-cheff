@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { RecipeAllTypes, RecipeProviderType } from '../types';
 import RecipeDetailsContext from './RecipeDetailsContext';
 
@@ -8,6 +8,7 @@ function RecipeDetailsProvider({ children }: RecipeProviderType) {
   const [recipe, setRecipe] = useState<RecipeAllTypes[]>([]);
   const [recommended, setRecommended] = useState<RecipeAllTypes[]>([]);
   const [copyLink, setCopyLink] = useState(false);
+  const carousel: any = useRef();
 
   const filterIngredientsAndMeasure = (data: any) => {
     const filterIngredients = Object.keys(data[0])
@@ -59,6 +60,18 @@ function RecipeDetailsProvider({ children }: RecipeProviderType) {
     }
   };
 
+  const handleLeftClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    console.log(carousel.current.offsetWidth);
+    carousel.current.scrollLeft -= carousel.current.offsetWidth;
+  };
+
+  const handleRightClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    console.log(carousel.current.offsetWidth);
+    carousel.current.scrollLeft += carousel.current.offsetWidth;
+  };
+
   const value = {
     ingredients,
     measure,
@@ -68,6 +81,9 @@ function RecipeDetailsProvider({ children }: RecipeProviderType) {
     recommended,
     handleCopyClick,
     copyLink,
+    handleLeftClick,
+    handleRightClick,
+    carousel,
   };
 
   return (

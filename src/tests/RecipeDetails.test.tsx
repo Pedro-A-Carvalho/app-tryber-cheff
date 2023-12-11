@@ -202,4 +202,15 @@ describe('Testa a tela de detalhes.', () => {
 
     console.log(` pega aqui: ${storageFavorite}`);
   });
+
+  test('Verifica se ao clicar no botão Continue recipe a página é redirecionada.', async () => {
+    const { user } = renderWithProviderTotal(<App />, { route: routeDrinkContinue });
+
+    const btnStart = await screen.findByTestId(testIdBtnStar);
+    expect(btnStart).toBeInTheDocument();
+
+    await user.click(btnStart);
+
+    expect(window.location.pathname).toBe('/drinks/178319/in-progress');
+  });
 });

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import './RecipeDetails.css';
 import shareIcon from '../images/shareIcon.svg';
@@ -9,7 +9,8 @@ import ButtonCarousel from '../images/216151_right_chevron_icon.png';
 
 function RecipeDetails() {
   const { ingredients, measure, pageDrinks, pageMeals, recipe,
-    recommended, handleCopyClick, copyLink } = useContext(RecipeDetailsContext);
+    recommended, handleCopyClick, copyLink,
+    handleLeftClick, handleRightClick, carousel } = useContext(RecipeDetailsContext);
   const { id }: any = useParams();
   const location = useLocation();
   const path = location.pathname;
@@ -22,7 +23,6 @@ function RecipeDetails() {
   const type = path.split('/')[1];
   const recipesInProgress = JSON.parse(localStorage.getItem('inProgressRecipes')
   || JSON.stringify({ meals: {}, drinks: {} }));
-  const carousel: any = useRef();
 
   useEffect(() => {
     const requestApi = async () => {
@@ -76,17 +76,6 @@ function RecipeDetails() {
     }
   };
 
-  const handleLeftClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    console.log(carousel.current.offsetWidth);
-    carousel.current.scrollLeft -= carousel.current.offsetWidth;
-  };
-
-  const handleRightClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    console.log(carousel.current.offsetWidth);
-    carousel.current.scrollLeft += carousel.current.offsetWidth;
-  };
   return (
     <>
       {
@@ -192,7 +181,9 @@ function RecipeDetails() {
                   style={
                       { position: 'fixed', bottom: '0', left: '0', width: '100vw' }
 }
-                  onClick={ () => navigate(`${path}/in-progress`) }
+                  onClick={ () => {
+                    navigate(`${path}/in-progress`);
+                  } }
                 >
                   Continue Recipe
                 </button>
