@@ -1,7 +1,55 @@
-.card {
-  background-color: white;
-  border-radius: 8px;
-  box-sizing: border-box;
-  color: black;
-  margin: 8px;
+* {
+  box-sizing: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.container-recommended {
+  display: flex;
+  max-width: 95vw;
+}
+
+.container-recommended .carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+}
+
+.container-recommended .carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.container-recommended .carousel .item {
+  background-color: rgb(224, 224, 224);
+  border-radius: 5px;
+  flex: none;
+  padding: 10px;
+  width: 50vw;
+}
+
+.carousel .item .image img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.carousel .item .name-item span {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 10px 0;
+}
+
+.buttons {
+  text-align: center;
+  width: 100%;
+}
+
+.buttons button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.buttonLeft {
+  transform: rotate(180deg);
 }

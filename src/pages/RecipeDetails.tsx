@@ -1,12 +1,11 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-// import Slider from 'react-slick';
 import './RecipeDetails.css';
-// import 'slick-carousel/slick/slick.css';
 import shareIcon from '../images/shareIcon.svg';
 import favoriteIconWhite from '../images/whiteHeartIcon.svg';
 import favoriteIconBlack from '../images/blackHeartIcon.svg';
 import RecipeDetailsContext from '../context/RecipeDetailsContext';
+import ButtonCarousel from '../images/216151_right_chevron_icon.png';
 
 function RecipeDetails() {
   const { ingredients, measure, pageDrinks, pageMeals, recipe,
@@ -16,7 +15,6 @@ function RecipeDetails() {
   const path = location.pathname;
   const newPath = path.slice(1);
   const indexCaractere = newPath.indexOf('/');
-  const getPathName = newPath.slice(0, indexCaractere);
   const navigate = useNavigate();
   const cards = recommended.slice(0, 6);
   const pathNameForStorage = newPath.slice(0, indexCaractere - 1);
@@ -24,56 +22,33 @@ function RecipeDetails() {
   const type = path.split('/')[1];
   const recipesInProgress = JSON.parse(localStorage.getItem('inProgressRecipes')
   || JSON.stringify({ meals: {}, drinks: {} }));
+  const carousel: any = useRef();
 
   useEffect(() => {
     const requestApi = async () => {
       if (path === `/meals/${id}`) {
         pageMeals(id);
         const getFavorite = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
-
         getFavorite
           .forEach((recipeFavorite: any) => {
             if (recipeFavorite.id.includes(id)) {
               setIsFavorite(true);
             }
           });
-
-        console.log(isFavorite);
       }
       if (path === `/drinks/${id}`) {
         pageDrinks(id);
         const getFavorite = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
-
         getFavorite
           .forEach((recipeFavorite: any) => {
             if (recipeFavorite.id.includes(id)) {
               setIsFavorite(true);
             }
           });
-
-        console.log(isFavorite);
       }
     };
     requestApi();
   }, []);
-
-  const settings = {
-    infinite: false,
-    slidesToShow: 2,
-    slidesToScroll: 2,
-    speed: 700,
-    arrows: true,
-  };
-
-  // mock localStorage temporário até tela de progress ser implementada
-  const inProgressRecipesTeste: any = [{
-    drinks: {
-      178319: [],
-    },
-    meals: {
-      52771: [],
-    },
-  }];
 
   const handleFavorite = () => {
     const getFavorite = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
@@ -86,7 +61,6 @@ function RecipeDetails() {
       name: recipe[0].strDrink || recipe[0].strMeal,
       image: recipe[0].strDrinkThumb || recipe[0].strMealThumb,
     };
-
     if (isFavorite) {
       const removeStorage = getFavorite
         .filter((recipeFavorite: any) => (
@@ -100,6 +74,18 @@ function RecipeDetails() {
       localStorage
         .setItem('favoriteRecipes', JSON.stringify([...getFavorite, newFavorite]));
     }
+  };
+
+  const handleLeftClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    console.log(carousel.current.offsetWidth);
+    carousel.current.scrollLeft -= carousel.current.offsetWidth;
+  };
+
+  const handleRightClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    console.log(carousel.current.offsetWidth);
+    carousel.current.scrollLeft += carousel.current.offsetWidth;
   };
   return (
     <>
@@ -155,25 +141,48 @@ function RecipeDetails() {
             )
           }
             <h2>Recommended</h2>
-            <div>
-              {cards.map((card, index) => (
-                <div
-                  key={ index }
-                  className="card"
-                  data-testid={ `${index}-recommendation-card` }
-                >
-                  <img
-                    src={ card.strDrinkThumb || card.strMealThumb }
-                    alt={ card.strDrink || card.strMeal }
-                    style={ { width: 'auto', height: '10em' } }
-                  />
-                  <p
-                    data-testid={ `${index}-recommendation-title` }
+            <div className="container-recommended">
+              <div
+                className="carousel"
+                ref={ carousel }
+              >
+                {cards.map((card, index) => (
+                  <div
+                    className="item"
+                    key={ index }
+                    data-testid={ `${index}-recommendation-card` }
                   >
-                    {card.strDrink || card.strMeal}
-                  </p>
-                </div>
-              ))}
+                    <div className="image">
+                      <img
+                        src={ card.strDrinkThumb || card.strMealThumb }
+                        alt={ card.strDrink || card.strMeal }
+                        style={ { width: 'auto', height: '10em' } }
+                      />
+                    </div>
+                    <div className="name-item">
+                      <span
+                        data-testid={ `${index}-recommendation-title` }
+                      >
+                        {card.strDrink || card.strMeal}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="buttons">
+              <button onClick={ handleLeftClick } className="buttonLeft">
+                <img
+                  src={ ButtonCarousel }
+                  alt="Scroll Left"
+                />
+              </button>
+              <button onClick={ handleRightClick }>
+                <img
+                  src={ ButtonCarousel }
+                  alt="Scroll Right"
+                />
+              </button>
             </div>
 
             {(Object.keys(recipesInProgress[`${type}`]).includes(id))
