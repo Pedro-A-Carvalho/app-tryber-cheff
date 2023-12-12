@@ -30,6 +30,9 @@ export type RecipeDetailsContextType = {
   recommended: RecipeAllTypes[]
   handleCopyClick: () => Promise<void>,
   copyLink: boolean,
+  handleLeftClick: (event: React.MouseEvent<HTMLButtonElement>) => void,
+  handleRightClick: (event: React.MouseEvent<HTMLButtonElement>) => void,
+  carousel: any
 
 };
 

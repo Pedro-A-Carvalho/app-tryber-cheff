@@ -34,6 +34,7 @@ function DoneRecipes() {
           src={ recipe.image }
           alt={ recipe.name }
           data-testid={ `${index}-horizontal-image` }
+          style={ { width: '100vw', height: 'auto' } }
         />
       </a>
 
